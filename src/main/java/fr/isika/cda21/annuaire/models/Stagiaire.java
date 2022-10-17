@@ -25,7 +25,7 @@ public class Stagiaire {
     private static String mettreStringAttributALaTaille(String attribut) {
         String attributLong = attribut;
         if (attribut.length() > TAILLE_MAX_STRING) {
-            attributLong = attribut.substring(0, TAILLE_MAX_STRING - 1);
+            attributLong = attribut.substring(0, TAILLE_MAX_STRING - 1); //TAILLE_MAX_STRING car c'est l'indice.
         } else {
             for (int i = attribut.length(); i < TAILLE_MAX_STRING; i++) {
                 attributLong += " ";

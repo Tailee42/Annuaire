@@ -64,11 +64,12 @@ public class GestionFichiers {
         String promo = lectureAttributStringStagiaire();
         int anneeDeFormation = raf.readInt();
 
+        int listeChainee = raf.readInt();
         int filsGauche = raf.readInt();
         int filsDroit = raf.readInt();
 
         Stagiaire stagiaireLu = new Stagiaire(nom, prenom, departement, promo, anneeDeFormation);
-        return new Noeud(stagiaireLu, filsGauche, filsDroit);
+        return new Noeud(stagiaireLu, listeChainee, filsGauche, filsDroit);
     }
 
     private static String lectureAttributStringStagiaire() throws IOException {
