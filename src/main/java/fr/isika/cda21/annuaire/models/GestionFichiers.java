@@ -2,7 +2,7 @@ package fr.isika.cda21.annuaire.models;
 
 import java.io.*;
 
-public class GestionFichier {
+public class GestionFichiers {
 
     private static RandomAccessFile raf;
 
@@ -20,8 +20,8 @@ public class GestionFichier {
     }
 
     public static void verificationImportFichierDon() throws IOException {
-        if(raf.length() == 0) {
-            GestionFichier.ecritureAPartirDuFichierDom();
+        if (raf.length() == 0) {
+            GestionFichiers.ecritureAPartirDuFichierDom();
         }
     }
 
@@ -37,7 +37,7 @@ public class GestionFichier {
         int anneeDeFormation = Integer.parseInt(br.readLine().trim());
         br.readLine();
 
-        new  Noeud(new Stagiaire(nom, prenom, departement, promo, anneeDeFormation)).ecrireNoeudBinaire(raf);
+        new Noeud(new Stagiaire(nom, prenom, departement, promo, anneeDeFormation)).ecrireNoeudBinaire(raf);
 
         while (reader.ready()) {
             nom = br.readLine().trim();
@@ -47,7 +47,7 @@ public class GestionFichier {
             anneeDeFormation = Integer.parseInt(br.readLine().trim());
             br.readLine();
 
-            if(!nom.equals("")){
+            if (!nom.equals("")) {
                 ArbreBinaire.ajouterUnStagiaire(new Stagiaire(nom, prenom, departement, promo, anneeDeFormation), raf);
             }
 
@@ -67,13 +67,13 @@ public class GestionFichier {
         int filsGauche = raf.readInt();
         int filsDroit = raf.readInt();
 
-        Stagiaire stagiaireLu  = new Stagiaire(nom, prenom, departement, promo, anneeDeFormation);
-        return new Noeud( stagiaireLu, filsGauche, filsDroit);
+        Stagiaire stagiaireLu = new Stagiaire(nom, prenom, departement, promo, anneeDeFormation);
+        return new Noeud(stagiaireLu, filsGauche, filsDroit);
     }
 
     private static String lectureAttributStringStagiaire() throws IOException {
         String attribut = "";
-        for (int i= 0; i<Stagiaire.TAILLE_MAX_STRING; i++){
+        for (int i = 0; i < Stagiaire.TAILLE_MAX_STRING; i++) {
             attribut += raf.readChar();
         }
         return attribut;
@@ -85,6 +85,6 @@ public class GestionFichier {
     }
 
     public static void setRaf(RandomAccessFile raf) {
-        GestionFichier.raf = raf;
+        GestionFichiers.raf = raf;
     }
 }

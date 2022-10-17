@@ -21,31 +21,29 @@ public class Stagiaire {
         this.anneeDeFormation = anneeDeFormation;
     }
 
+    //Méthodes Spécifiques
     private static String mettreStringAttributALaTaille(String attribut) {
         String attributLong = attribut;
         if (attribut.length() > TAILLE_MAX_STRING) {
-            attributLong = attribut.substring(0, TAILLE_MAX_STRING-1);
+            attributLong = attribut.substring(0, TAILLE_MAX_STRING - 1);
         } else {
-            for (int i = attribut.length(); i<TAILLE_MAX_STRING; i++) {
+            for (int i = attribut.length(); i < TAILLE_MAX_STRING; i++) {
                 attributLong += " ";
             }
         }
         return attributLong;
     }
 
-    //Méthodes Spécifiques
     @Override
     public String toString() {
-        return this.nom + " " + this.prenom + " " + this.departement + " " + this.promo + " " +
-                this.anneeDeFormation + " ";
+        return this.nom + " " + this.prenom + " " + this.departement + " " + this.promo + " " + this.anneeDeFormation + " ";
     }
 
     public int compareTo(Stagiaire myStagiaire) {
         if (myStagiaire.nom.compareToIgnoreCase(this.nom) == 0) {
             if (myStagiaire.prenom.compareToIgnoreCase(this.prenom) == 0) {
                 if (myStagiaire.departement.compareToIgnoreCase(this.departement) == 0) {
-                    return myStagiaire.promo.compareToIgnoreCase(this.promo) == 0 ?
-                            myStagiaire.getAnneeDeFormation() - this.anneeDeFormation : myStagiaire.promo.compareToIgnoreCase(this.promo);
+                    return myStagiaire.promo.compareToIgnoreCase(this.promo) == 0 ? myStagiaire.getAnneeDeFormation() - this.anneeDeFormation : myStagiaire.promo.compareToIgnoreCase(this.promo);
                 } else {
                     return myStagiaire.departement.compareToIgnoreCase(this.departement);
                 }

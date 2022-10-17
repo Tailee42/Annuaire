@@ -1,6 +1,6 @@
 package fr.isika.cda21.annuaire.tests;
 
-import fr.isika.cda21.annuaire.models.GestionFichier;
+import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Noeud;
 
 import java.io.IOException;
@@ -8,14 +8,14 @@ import java.io.IOException;
 public class TesteurAjoutDON {
     public static void main(String[] args) {
         try {
-            GestionFichier.verificationImportFichierDon();
+            GestionFichiers.verificationImportFichierDon();
 
-            GestionFichier.getRaf().seek(0);
-            for (int i = 0; i < (GestionFichier.getRaf().length()/ Noeud.TAILLE_NOEUD_OCTETS); i++ ){
-                System.out.println(GestionFichier.lectureNoeud());
+            GestionFichiers.getRaf().seek(0);
+            for (int i = 0; i < (GestionFichiers.getRaf().length() / Noeud.TAILLE_NOEUD_OCTETS); i++) {
+                System.out.println(GestionFichiers.lectureNoeud());
             }
 
-            GestionFichier.fermetureAccessFile();
+            GestionFichiers.fermetureAccessFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

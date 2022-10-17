@@ -6,16 +6,15 @@ import java.io.RandomAccessFile;
 public class Noeud {
 
     //attributs
-
     private Stagiaire stagiaire;
     private int filsGauche;
     private int filsDroit;
     public static final int TAILLE_FILS_GAUCHE_OCTETS = 4;
     public static final int TAILLE_FILS_DROIT_OCTETS = 4;
-    public static final int TAILLE_NOEUD_OCTETS = Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS +TAILLE_FILS_DROIT_OCTETS;
+    public static final int TAILLE_NOEUD_OCTETS =
+            Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS + TAILLE_FILS_DROIT_OCTETS;
 
     //Constructeur
-
     public Noeud(Stagiaire stagiaire, int filsGauche, int filsDroit) {
         super();
         this.stagiaire = stagiaire;
@@ -31,7 +30,6 @@ public class Noeud {
     }
 
     //méthodes spécifiques
-
     @Override
     public String toString() {
         return "{" +
@@ -53,35 +51,32 @@ public class Noeud {
             // TODO Faire une sortie utilisateur
             System.out.println("Il existe déjà");
 
-        } else if(this.stagiaire.compareTo(stagiaireAAjouter) < 0){
-            if(this.filsGauche == -1) {
+        } else if (this.stagiaire.compareTo(stagiaireAAjouter) < 0) {
+            if (this.filsGauche == -1) {
                 int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
-                raf.seek(raf.getFilePointer()-(TAILLE_FILS_GAUCHE_OCTETS+TAILLE_FILS_DROIT_OCTETS));
+                raf.seek(raf.getFilePointer() - (TAILLE_FILS_GAUCHE_OCTETS + TAILLE_FILS_DROIT_OCTETS));
                 raf.writeInt(indexStagiaireAAjouter);
                 raf.seek(raf.length());
                 new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
-            } else  {
-                raf.seek(this.filsGauche*TAILLE_NOEUD_OCTETS);
-                Noeud noeudFilsGauche = GestionFichier.lectureNoeud();
-                noeudFilsGauche.ajouterNoeud(stagiaireAAjouter,raf);
+            } else {
+                raf.seek(this.filsGauche * TAILLE_NOEUD_OCTETS);
+                Noeud noeudFilsGauche = GestionFichiers.lectureNoeud();
+                noeudFilsGauche.ajouterNoeud(stagiaireAAjouter, raf);
             }
         } else {
-            if(this.filsDroit == -1) {
+            if (this.filsDroit == -1) {
                 int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
-                raf.seek(raf.getFilePointer()-(TAILLE_FILS_DROIT_OCTETS));
+                raf.seek(raf.getFilePointer() - (TAILLE_FILS_DROIT_OCTETS));
                 raf.writeInt(indexStagiaireAAjouter);
                 raf.seek(raf.length());
                 new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
-            } else  {
-                raf.seek(this.filsDroit*TAILLE_NOEUD_OCTETS);
-                Noeud noeudFilsDroit = GestionFichier.lectureNoeud();
-                noeudFilsDroit.ajouterNoeud(stagiaireAAjouter,raf);
+            } else {
+                raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
+                Noeud noeudFilsDroit = GestionFichiers.lectureNoeud();
+                noeudFilsDroit.ajouterNoeud(stagiaireAAjouter, raf);
             }
         }
     }
-
-
-
 
 
     //getters & setters
