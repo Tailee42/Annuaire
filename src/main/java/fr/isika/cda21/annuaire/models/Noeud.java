@@ -180,6 +180,104 @@ public class Noeud {
     }
 
 
+    public int supprimerNoeud(Stagiaire stagiaireASupprimer, RandomAccessFile raf) throws IOException {
+        int indexDuStagiaire = (int) ((raf.getFilePointer() - TAILLE_NOEUD_OCTETS) / TAILLE_NOEUD_OCTETS);
+        if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireASupprimer.getNom()) > 0) {
+
+            raf.seek(this.filsGauche * TAILLE_NOEUD_OCTETS);// pour positionner le curseur au début du fils gauche on
+            // multiplie l'index du fils gauche par la taille d'un noeud
+            Noeud noeudFilsGauche = GestionFichiers.lectureNoeud(); // on lit les valeurs du fils gauche où le curseur
+            // s'est arrêté pour stocker les informations
+
+            this.filsGauche = noeudFilsGauche.supprimerNoeud(stagiaireASupprimer, raf);
+            raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS); //car on est au début de notre Noeud
+            raf.writeInt(this.filsGauche);
+
+        } else if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireASupprimer.getNom()) < 0) { // on ne veut pas le contraire de
+            // strictement plus petit (qui est
+            // strictement plus grand ou égal)
+            // mais on veut juste le
+            // strictement plus grand.
+            raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
+            Noeud noeudFilsDroit = GestionFichiers.lectureNoeud();
+
+            this.filsDroit = noeudFilsDroit.supprimerNoeud(stagiaireASupprimer, raf);
+            raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS); //car on est au début de notre Noeud
+            raf.writeInt(this.filsDroit);
+
+        } else { // cas où on a trouvé le nom du stagiaire à supprimer
+            // est-ce que mon noeud correspond au stagiaire?
+            if (this.stagiaire.compareTo(stagiaireASupprimer) == 0 && this.listeChainee == LISTE_VIDE) { // cas où le stagiaire à supprimé est dans l'arbre binaire et n'a pas de liste chainée
+                if (this.filsGauche == FILS_NUL || this.filsDroit == FILS_NUL) {
+                    if (this.filsGauche != FILS_NUL) {
+                        return filsGauche;
+                    } else {
+                        return filsDroit;
+                    }
+                } else {
+                    // il faut récupérer l'indice du stagiaire que l'on va supprimer
+                    // (this.stagiaire) pour pouvoir l'utiliser après getSuccesseur qui a déplacé le
+                    // curseur.
+
+                    Noeud noeudDeRemplacement = this.getSuccesseur(raf);
+                    raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS); // on a positionné notre curseur au bon
+                    // endroit: le début du stagiaire à
+                    // supprimer.
+                    noeudDeRemplacement.stagiaire.ecritureStagiaireBinaire(raf);// on a écrit les informations de notre
+                    // stagiaire successeur et de sa liste
+                    // chaînée dans notre noeud
+                    raf.writeInt(noeudDeRemplacement.listeChainee);
+
+                    raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
+                    Noeud noeudFilsDroit = GestionFichiers.lectureNoeud();
+                    this.filsDroit = noeudFilsDroit.supprimerNoeud(noeudDeRemplacement.stagiaire, raf);
+                    raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS); //car on est au début de notre Noeud
+                    raf.writeInt(this.filsDroit);
+
+                    return indexDuStagiaire;
+                }
+            } else if (this.stagiaire.compareTo(stagiaireASupprimer) == 0) { // Le stagiaire à supprimer est dans l'arbre et il a une liste chainee. Il faut que l'arbre pointe vers le deuxième maillon de la chaine.
+                Noeud noeudActuel = this;
+                int indexNoeudActuel = indexDuStagiaire;
+
+                raf.seek(noeudActuel.listeChainee  * TAILLE_NOEUD_OCTETS);
+                Noeud noeudChaineSuivant = GestionFichiers.lectureNoeud();
+
+                raf.seek(indexNoeudActuel * TAILLE_NOEUD_OCTETS);
+                noeudChaineSuivant.stagiaire.ecritureStagiaireBinaire(raf);
+
+                raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS);
+                raf.writeInt(noeudChaineSuivant.listeChainee);
+
+            } else  { //cas où le stagiaire à supprimer est dans la liste chainée mais pas au début.
+                Noeud noeudCourant = this;
+                int indexNoeudCourant = indexDuStagiaire;
+                int indexPrecedent = LISTE_VIDE;
+                while (noeudCourant.stagiaire.compareTo(stagiaireASupprimer) != 0) {
+                    raf.seek(noeudCourant.listeChainee * TAILLE_NOEUD_OCTETS);
+                    indexPrecedent = indexNoeudCourant;
+                    indexNoeudCourant = noeudCourant.listeChainee;
+                    noeudCourant = GestionFichiers.lectureNoeud();
+                }
+
+                raf.seek(indexPrecedent * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS);
+                raf.writeInt(noeudCourant.listeChainee);
+            }
+        }
+        return indexDuStagiaire;
+    }
+
+
+    private Noeud getSuccesseur(RandomAccessFile raf) throws IOException {
+        raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
+        Noeud noeudTemporaire = GestionFichiers.lectureNoeud();
+        while (noeudTemporaire.filsGauche != FILS_NUL) {
+            raf.seek(noeudTemporaire.filsGauche * TAILLE_NOEUD_OCTETS);
+            noeudTemporaire = GestionFichiers.lectureNoeud();
+        }
+        return noeudTemporaire;
+    }
+
 
     //getters & setters
     public Stagiaire getStagiaire() {

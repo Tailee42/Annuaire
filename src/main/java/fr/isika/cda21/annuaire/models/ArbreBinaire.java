@@ -13,6 +13,10 @@ public class ArbreBinaire {
             raf.seek(0);
             Noeud premierNoeud = GestionFichiers.lectureNoeud();
             premierNoeud.ajouterNoeud(stagaireAAjouter, raf);
+        } else {
+            raf.seek(0);
+            Noeud premierNoeud = new Noeud(stagaireAAjouter);
+            premierNoeud.ecrireNoeudBinaire(raf);
         }
     }
 
@@ -53,6 +57,14 @@ public class ArbreBinaire {
         } else {
             //retour visuel, fichier vide
             System.out.println("Aucun stagiaire ne correspond aux critères.");
+        }
+    }
+
+    public static void supprimerUnStagiaire(Stagiaire stagiaireASupprimer, RandomAccessFile raf) throws IOException {
+        if (raf.length() != 0) {
+            raf.seek(0);
+            Noeud premierNoeud = GestionFichiers.lectureNoeud();
+            premierNoeud.supprimerNoeud(stagiaireASupprimer, raf);
         }
     }
 
