@@ -14,36 +14,30 @@ public class TesteurParcoursRechercheNom {
 
             GestionFichiers.getRaf().seek(0);
 
-             //************************ Test Affichage ordre alphabetique
-             List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-             ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire,
-             GestionFichiers.getRaf());
+            //************************ Test Affichage ordre alphabetique
+            List<Stagiaire> listeDeStagiaire = new ArrayList<>();
+            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire,
+                    GestionFichiers.getRaf());
 
-             for (Stagiaire stagiaire : listeDeStagiaire) {
-                 System.out.println(stagiaire);
-             }
+            for (Stagiaire stagiaire : listeDeStagiaire) {
+                System.out.println(stagiaire);
+            }
 
             // ********************** Test Recherche classique nom *******************************
             List<Stagiaire> listeResultats = new ArrayList<>();
 
             ArbreBinaire.debutRechercheStagiaire(listeResultats, new Stagiaire("TRAN", "", "", "", 0),GestionFichiers.getRaf());
 
-			for (Stagiaire stagiaire : listeResultats) {
-				System.out.println("Trouvé : " + stagiaire);
-			}
-
-            System.out.println();
-
-
+            for (Stagiaire stagiaire : listeResultats) {
+                System.out.println("Trouvé : " + stagiaire);
+            }
 
             //	**************************** Test Recherche Avancée *******************************************
-            System.out.println("Résultats de la recherche avancée");
-
             List<Stagiaire> rechercheAvancee = new ArrayList<>();
 
-            ArbreBinaire.dbtRechAv(rechercheAvancee, new Stagiaire(null, "","","",2012 ), GestionFichiers.getRaf());
+            ArbreBinaire.dbtRechAv(rechercheAvancee, new Stagiaire(null, null,null,"ATOD 17",0 ), GestionFichiers.getRaf());
 
-            if(rechercheAvancee.size() == 0) {
+            if(rechercheAvancee.size()== 0) {
                 System.out.println("La liste est vide.");
             }
 

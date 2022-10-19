@@ -8,6 +8,7 @@ public class TestLoginScene extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 
     @Override
@@ -17,4 +18,5 @@ public class TestLoginScene extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }

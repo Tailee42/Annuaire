@@ -40,7 +40,7 @@ public class Stagiaire {
 
     @Override
     public String toString() {
-        return this.nom + " " + this.prenom + " " + this.departement + " " + this.promo + " " + this.anneeDeFormation + " ";
+        return this.nom + "| " + this.prenom + "| " + this.departement + "| " + this.promo + "| " + this.anneeDeFormation + " ";
     }
 
     public int compareTo(Stagiaire myStagiaire) {
@@ -72,7 +72,7 @@ public class Stagiaire {
     }
 
 
-    // NON UTILISER A SUPPRIMER ????
+    // TODO NON UTILISEE A SUPPRIMER ????
     /*public void rechercher(Stagiaire stagiaireRecherche, RandomAccessFile raf) {
         try {
             raf.seek(0);
@@ -92,7 +92,6 @@ public class Stagiaire {
                 rechercher(stagiaireRecherche, raf);
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }*/
@@ -105,8 +104,8 @@ public class Stagiaire {
         boolean promoIdentique = false;
         boolean anneeIdentique = false;
 
-        String attributVide= Stagiaire.mettreStringAttributALaTaille("");
-        //méthode .equals() pour comparer le contenu des String;  l'opérateur == compare leur adresse
+        String attributVide = Stagiaire.mettreStringAttributALaTaille("");
+
         if (!stagiaireToFind.getNom().equals(attributVide)) {
             if (stagiaireToFind.getNom().compareToIgnoreCase(this.getNom()) == 0) {
                 nomIdentique = true;
@@ -134,7 +133,7 @@ public class Stagiaire {
 
         // promo
         if (stagiaireToFind.getPromo().compareToIgnoreCase(attributVide) != 0) {
-            if (this.getPromo().toLowerCase().contains(stagiaireToFind.getPromo().toLowerCase().trim())) {
+            if (this.getPromo().contains(stagiaireToFind.getPromo().trim())) {
                 promoIdentique = true;
             }
         } else {

@@ -1,33 +1,31 @@
 package fr.isika.cda21.annuaire.tests;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import fr.isika.cda21.annuaire.models.ArbreBinaire;
+import fr.isika.cda21.annuaire.models.GestionFichiers;
+import fr.isika.cda21.annuaire.models.ImpressionPDF;
+import fr.isika.cda21.annuaire.models.Stagiaire;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestLibrairiePDF {
     public static final String DESTINATION = "src/main/resources/hello_word.pdf";
 
     public static void main(String[] args) {
         try {
-            new TestLibrairiePDF().createPDF(DESTINATION);
-        } catch (FileNotFoundException | DocumentException e) {
+            List<Stagiaire> listeRecherche = new ArrayList<>();
+            Stagiaire criteresRecherche = new Stagiaire(null, null,"75","",0 );
+            ArbreBinaire.dbtRechAv(listeRecherche, criteresRecherche, GestionFichiers.getRaf());
+
+            ImpressionPDF.createPDF(listeRecherche, criteresRecherche);
+
+
+        } catch (IOException | DocumentException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void createPDF(String fileName) throws FileNotFoundException, DocumentException {
-        Document document = new Document();
-        FileOutputStream fos = new FileOutputStream(fileName);
-        PdfWriter.getInstance(document, fos);
-
-        document.open();
-
-        document.add(new Paragraph("Hello PDF"));
-
-        document.close();
-    }
 }

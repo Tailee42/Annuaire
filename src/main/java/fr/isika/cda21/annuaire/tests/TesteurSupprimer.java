@@ -20,46 +20,44 @@ Attention pour l'utiliser :
 
 public class TesteurSupprimer {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         try {
-			List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-			ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire, GestionFichiers.getRaf());
+            List<Stagiaire> listeDeStagiaire = new ArrayList<>();
+            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire, GestionFichiers.getRaf());
 
-			if (listeDeStagiaire.size() == 0 ) {
-				System.out.println("Cette liste est vide");
-			}
+            if (listeDeStagiaire.size() == 0 ) {
+                System.out.println("Cette liste est vide");
+            }
 
-			for (Stagiaire stagiaire :
-					listeDeStagiaire) {
-				System.out.println(stagiaire);
-			}
+            for (Stagiaire stagiaire :
+                    listeDeStagiaire) {
+                System.out.println(stagiaire);
+            }
 
-			ArbreBinaire.supprimerUnStagiaire(new Stagiaire("Lacroix", "Charles", "23", "AL10", 2018), GestionFichiers.getRaf());
+            ArbreBinaire.supprimerUnStagiaire(new Stagiaire("Lacroix", "Charles", "23", "AL10", 2018), GestionFichiers.getRaf());
 
-			System.out.println();
-			GestionFichiers.getRaf().seek(0);
-			for (int i = 0; i < (GestionFichiers.getRaf().length() / Noeud.TAILLE_NOEUD_OCTETS); i++) {
-				System.out.println(GestionFichiers.lectureNoeud());
-			}
+            System.out.println();
+            GestionFichiers.getRaf().seek(0);
+            for (int i = 0; i < (GestionFichiers.getRaf().length() / Noeud.TAILLE_NOEUD_OCTETS); i++) {
+                System.out.println(GestionFichiers.lectureNoeud());
+            }
 
-			System.out.println("Liste avec la suppression");
+            System.out.println("Liste avec la suppression");
 
-			List<Stagiaire> listeDeStagiaireAvecSuppression = new ArrayList<>();
-					ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaireAvecSuppression, GestionFichiers.getRaf());
-
-
-			for (Stagiaire stagiaire :
-					listeDeStagiaireAvecSuppression) {
-				System.out.println(stagiaire);
-			}
+            List<Stagiaire> listeDeStagiaireAvecSuppression = new ArrayList<>();
+            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaireAvecSuppression, GestionFichiers.getRaf());
 
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
+            for (Stagiaire stagiaire :
+                    listeDeStagiaireAvecSuppression) {
+                System.out.println(stagiaire);
+            }
 
-	}
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

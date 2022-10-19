@@ -28,7 +28,8 @@ public class ArbreBinaire {
         }
     }
 
-    //Recherche lancée depuis la classe arbre. Args list qui contiendra les resultats correspondant : stagiaire recherché, raf pour lire le fichier
+    //Recherche lancée depuis la classe arbre. Args list qui contiendra les resultats
+    // correspondant : stagiaire recherché, raf pour lire le fichier
     public static void debutRechercheStagiaire(List<Stagiaire> listeResultats,Stagiaire stagiaireRecherche, RandomAccessFile raf ) throws IOException {
         if (raf.length() != 0) {
             raf.seek(0);
@@ -48,7 +49,6 @@ public class ArbreBinaire {
             raf.seek(0);
             Noeud premierNoeud = GestionFichiers.lectureNoeud();
             premierNoeud.ordreAlphabetique(ordreAlpha, raf);
-
             for(Stagiaire stagiaire : ordreAlpha) {
                 stagiaire.rechercheAvancee(rechercheAvancee, stagiaireToFind);
             }
@@ -63,6 +63,16 @@ public class ArbreBinaire {
             raf.seek(0);
             Noeud premierNoeud = GestionFichiers.lectureNoeud();
             premierNoeud.supprimerNoeud(stagiaireASupprimer, raf);
+        }
+    }
+
+    public static void modification(Stagiaire stagiaireAModifier, Stagiaire stagiaireAJour, RandomAccessFile raf)
+            throws IOException {
+        List<Stagiaire> aModifier = new ArrayList<>();
+
+        if (raf.length() != 0) {
+            ajouterUnStagiaire(stagiaireAJour, raf);
+            supprimerUnStagiaire(stagiaireAModifier, raf);
         }
     }
 

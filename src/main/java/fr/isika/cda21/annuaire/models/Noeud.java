@@ -78,7 +78,7 @@ public class Noeud {
                 raf.seek(raf.length());
                 new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
 
-        }
+            }
 
 
         } else if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireAAjouter.getNom()) > 0) {
@@ -312,4 +312,5 @@ public class Noeud {
         this.listeChainee = listeChainee;
     }
 }
+
 
