@@ -48,9 +48,7 @@ public class ArbreBinaire {
             raf.seek(0);
             Noeud premierNoeud = GestionFichiers.lectureNoeud();
             premierNoeud.ordreAlphabetique(ordreAlpha, raf);
-            for(Stagiaire stagiaire : ordreAlpha) {
-                System.out.println(stagiaire);
-            }
+
             for(Stagiaire stagiaire : ordreAlpha) {
                 stagiaire.rechercheAvancee(rechercheAvancee, stagiaireToFind);
             }

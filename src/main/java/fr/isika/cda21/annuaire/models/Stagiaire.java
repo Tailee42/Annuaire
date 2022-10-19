@@ -106,7 +106,7 @@ public class Stagiaire {
         boolean anneeIdentique = false;
 
         String attributVide= Stagiaire.mettreStringAttributALaTaille("");
-
+        //méthode .equals() pour comparer le contenu des String;  l'opérateur == compare leur adresse
         if (!stagiaireToFind.getNom().equals(attributVide)) {
             if (stagiaireToFind.getNom().compareToIgnoreCase(this.getNom()) == 0) {
                 nomIdentique = true;
@@ -134,7 +134,7 @@ public class Stagiaire {
 
         // promo
         if (stagiaireToFind.getPromo().compareToIgnoreCase(attributVide) != 0) {
-            if (this.getPromo().contains(stagiaireToFind.getPromo().trim())) {
+            if (this.getPromo().toLowerCase().contains(stagiaireToFind.getPromo().toLowerCase().trim())) {
                 promoIdentique = true;
             }
         } else {

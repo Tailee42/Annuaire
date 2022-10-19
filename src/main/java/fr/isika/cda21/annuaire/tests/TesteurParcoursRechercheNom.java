@@ -32,12 +32,18 @@ public class TesteurParcoursRechercheNom {
 				System.out.println("Trouvé : " + stagiaire);
 			}
 
+            System.out.println();
+
+
+
             //	**************************** Test Recherche Avancée *******************************************
+            System.out.println("Résultats de la recherche avancée");
+
             List<Stagiaire> rechercheAvancee = new ArrayList<>();
 
-            ArbreBinaire.dbtRechAv(rechercheAvancee, new Stagiaire(null, null,null,"ATOD 17",0 ), GestionFichiers.getRaf());
+            ArbreBinaire.dbtRechAv(rechercheAvancee, new Stagiaire(null, "","","",2012 ), GestionFichiers.getRaf());
 
-            if(rechercheAvancee.size()== 0) {
+            if(rechercheAvancee.size() == 0) {
                 System.out.println("La liste est vide.");
             }
 
