@@ -5,16 +5,19 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
-public class ImpressionPDF {
-    public static final String DESTINATION = "src/main/resources/hello_word.pdf";
+public class ImpressionPDF extends Application {
+    public static final String DESTINATION = "src/main/resources/impressionRecherche.pdf";
 
     // Crée le pdf, ouvre l'écriture dessus, puis ecris chaque stagaire de la liste.
-    public static void createPDF(List<Stagiaire> listeRecherche, Stagiaire criteresRecherche) throws FileNotFoundException, DocumentException {
+    public void createPDF(List<Stagiaire> listeRecherche) throws FileNotFoundException, DocumentException {
         Document document = new Document();
         FileOutputStream fos = new FileOutputStream(DESTINATION);
         PdfWriter.getInstance(document, fos);
@@ -30,7 +33,7 @@ public class ImpressionPDF {
         document.add(new Paragraph(" "));
 
 
-        document.add(new Paragraph("0. Nom                  | Prénom               | Département          | Promotion            | Année"  , fontLigneGras));
+        document.add(new Paragraph("   Nom                  | Prénom               | Département          | Promotion            | Année"  , fontLigneGras));
 
         int i = 1;
         for(Stagiaire stagiaire : listeRecherche){
@@ -39,5 +42,11 @@ public class ImpressionPDF {
         }
 
         document.close();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        File pdfFile = new File(DESTINATION);
+        getHostServices().showDocument(pdfFile.toURI().toString());
     }
 }

@@ -56,13 +56,16 @@ public class Noeud {
     }
 
     public void ajouterNoeud(Stagiaire stagiaireAAjouter, RandomAccessFile raf) throws IOException {
+
         if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireAAjouter.getNom()) == 0){
+            // Ajout du stagiaire dans l'arbre binaire
             if (this.stagiaire.compareTo(stagiaireAAjouter) == 0) {
 
                 // TODO Faire une sortie utilisateur
                 System.out.println("Il existe déjà");
 
             } else {
+                // Ajout du stagaire dans la liste chainée
                 Noeud noeudDeLaListeChainee = this;
 
                 while (noeudDeLaListeChainee.listeChainee != LISTE_VIDE) { //Déplacement dans la liste chainée poour arriver à la fin
@@ -79,8 +82,7 @@ public class Noeud {
                 new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
 
             }
-
-
+            //Recherche de l'emplacement pour l'ajout
         } else if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireAAjouter.getNom()) > 0) {
             if (this.filsGauche == FILS_NUL) {
                 int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
@@ -143,11 +145,10 @@ public class Noeud {
         // Compare les noms du stagiaire recherché et stagiaire courant
         if (stagiaireRecherche.getNom().compareToIgnoreCase(this.stagiaire.getNom()) == 0) {
 
-            // noms identiques,Ajout des resultats correspondant à la liste de résultats
+            // noms identiques, Ajout des resultats correspondant à la liste de résultats
             listeResultats.add(this.stagiaire);
 
-            // Si une liste chaînée existe dans le noeud actuel, on se déplace pour lire la
-            // liste
+            // Si une liste chaînée existe dans le noeud actuel, on se déplace pour lire la liste
             if (this.listeChainee != LISTE_VIDE) {
                 raf.seek(this.listeChainee * TAILLE_NOEUD_OCTETS);
                 // Déclare noeudSuivant pour pouvoir transmettre la méthode
@@ -181,7 +182,10 @@ public class Noeud {
 
 
     public int supprimerNoeud(Stagiaire stagiaireASupprimer, RandomAccessFile raf) throws IOException {
+
         int indexDuStagiaire = (int) ((raf.getFilePointer() - TAILLE_NOEUD_OCTETS) / TAILLE_NOEUD_OCTETS);
+
+        //Recherche du stagiaire
         if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireASupprimer.getNom()) > 0) {
 
             raf.seek(this.filsGauche * TAILLE_NOEUD_OCTETS);// pour positionner le curseur au début du fils gauche on
@@ -206,14 +210,16 @@ public class Noeud {
             raf.writeInt(this.filsDroit);
 
         } else { // cas où on a trouvé le nom du stagiaire à supprimer
-            // est-ce que mon noeud correspond au stagiaire?
+            // Et il correspond au noeud de l'arbrebinaire et il n'y  pas de liste chainée.
             if (this.stagiaire.compareTo(stagiaireASupprimer) == 0 && this.listeChainee == LISTE_VIDE) { // cas où le stagiaire à supprimé est dans l'arbre binaire et n'a pas de liste chainée
+                //Cas de la feuille ou cas avec un seul fils.
                 if (this.filsGauche == FILS_NUL || this.filsDroit == FILS_NUL) {
                     if (this.filsGauche != FILS_NUL) {
                         return filsGauche;
                     } else {
                         return filsDroit;
                     }
+                    //cas avec 2 fils.
                 } else {
                     // il faut récupérer l'indice du stagiaire que l'on va supprimer
                     // (this.stagiaire) pour pouvoir l'utiliser après getSuccesseur qui a déplacé le
@@ -221,11 +227,9 @@ public class Noeud {
 
                     Noeud noeudDeRemplacement = this.getSuccesseur(raf);
                     raf.seek(indexDuStagiaire * TAILLE_NOEUD_OCTETS); // on a positionné notre curseur au bon
-                    // endroit: le début du stagiaire à
-                    // supprimer.
+                    // endroit: le début du stagiaire à supprimer.
                     noeudDeRemplacement.stagiaire.ecritureStagiaireBinaire(raf);// on a écrit les informations de notre
-                    // stagiaire successeur et de sa liste
-                    // chaînée dans notre noeud
+                    // stagiaire successeur et de sa liste chaînée dans notre noeud
                     raf.writeInt(noeudDeRemplacement.listeChainee);
 
                     raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
@@ -236,7 +240,9 @@ public class Noeud {
 
                     return indexDuStagiaire;
                 }
+
             } else if (this.stagiaire.compareTo(stagiaireASupprimer) == 0) { // Le stagiaire à supprimer est dans l'arbre et il a une liste chainee. Il faut que l'arbre pointe vers le deuxième maillon de la chaine.
+                // on écrit le stagiaire suivant et son index de liste sur le stagiaire à supprimer
                 Noeud noeudActuel = this;
                 int indexNoeudActuel = indexDuStagiaire;
 
@@ -268,6 +274,7 @@ public class Noeud {
     }
 
 
+    //pour récupérer les informations du noeud qui succecede celui à supprimer (ici le plus petit des plus grands)
     private Noeud getSuccesseur(RandomAccessFile raf) throws IOException {
         raf.seek(this.filsDroit * TAILLE_NOEUD_OCTETS);
         Noeud noeudTemporaire = GestionFichiers.lectureNoeud();

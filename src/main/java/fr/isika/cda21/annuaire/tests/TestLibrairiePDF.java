@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestLibrairiePDF {
-    public static final String DESTINATION = "src/main/resources/hello_word.pdf";
 
     public static void main(String[] args) {
         try {
@@ -20,8 +19,9 @@ public class TestLibrairiePDF {
             Stagiaire criteresRecherche = new Stagiaire(null, null,"75","",0 );
             ArbreBinaire.dbtRechAv(listeRecherche, criteresRecherche, GestionFichiers.getRaf());
 
-            ImpressionPDF.createPDF(listeRecherche, criteresRecherche);
+            ImpressionPDF pdf = new ImpressionPDF();
 
+            pdf .createPDF(listeRecherche);
 
         } catch (IOException | DocumentException e) {
             throw new RuntimeException(e);

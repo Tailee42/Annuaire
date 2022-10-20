@@ -3,6 +3,7 @@ package fr.isika.cda21.annuaire.models;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
+import java.util.Objects;
 
 public class Stagiaire {
     private String nom;
@@ -15,7 +16,7 @@ public class Stagiaire {
 
     //Constructeurs
     public Stagiaire(String nom, String prenom, String departement, String promo, int anneeDeFormation) {
-        this.nom = mettreStringAttributALaTaille(nom);
+        this.nom = mettreStringAttributALaTaille(nom).toUpperCase();
         this.prenom = mettreStringAttributALaTaille(prenom);
         this.departement = mettreStringAttributALaTaille(departement);
         this.promo = mettreStringAttributALaTaille(promo);
@@ -26,7 +27,7 @@ public class Stagiaire {
     private static String mettreStringAttributALaTaille(String attribut) {
         if (attribut == null) {
             attribut = "";
-        } // TODO A voir pourquoi ça ne fonctionnne pas ?
+        }
         String attributLong = attribut;
         if (attribut.length() > TAILLE_MAX_STRING) {
             attributLong = attribut.substring(0, TAILLE_MAX_STRING - 1); //TAILLE_MAX_STRING car c'est l'indice.
@@ -71,31 +72,6 @@ public class Stagiaire {
         raf.writeInt(anneeDeFormation);
     }
 
-
-    // TODO NON UTILISEE A SUPPRIMER ????
-    /*public void rechercher(Stagiaire stagiaireRecherche, RandomAccessFile raf) {
-        try {
-            raf.seek(0);
-            Stagiaire stagiaireLu = GestionFichiers.lectureNoeud().getStagiaire();
-            if (stagiaireRecherche.compareTo(stagiaireLu) == 0) {
-                stagiaireRecherche = stagiaireLu;
-            } else if (stagiaireRecherche.compareTo(stagiaireLu) > 0) {
-                raf.seek(GestionFichiers.lectureNoeud().getFilsGauche());
-                rechercher(stagiaireRecherche, raf);
-            } else {
-                raf.seek(GestionFichiers.lectureNoeud().getFilsDroit());
-                rechercher(stagiaireRecherche, raf);
-            }
-            int stagiaireListe = GestionFichiers.lectureNoeud().getListeChainee();
-            if (stagiaireListe == -1) {
-                raf.seek(stagiaireListe);
-                rechercher(stagiaireRecherche, raf);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void rechercheAvancee(List<Stagiaire> rechercheAvancee, Stagiaire stagiaireToFind) {
 
         boolean nomIdentique = false;
@@ -106,6 +82,7 @@ public class Stagiaire {
 
         String attributVide = Stagiaire.mettreStringAttributALaTaille("");
 
+        //Condition qui permet d'être true car le critère est vide et sinon de vérifier la condition
         if (!stagiaireToFind.getNom().equals(attributVide)) {
             if (stagiaireToFind.getNom().compareToIgnoreCase(this.getNom()) == 0) {
                 nomIdentique = true;

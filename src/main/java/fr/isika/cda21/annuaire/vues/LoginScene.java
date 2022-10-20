@@ -9,9 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class LoginScene extends Scene {
+public class LoginScene extends Scene implements StyleGeneral{
 
     public Label identifiant;
     public Label motDePasse;
@@ -20,13 +22,12 @@ public class LoginScene extends Scene {
     public Button btnValider;
     public Button btnAnnuler;
     public VBox myRoot;
-    public boolean administrateur;
-
+    public HBox hbBoutons;
 
 
 
     //constructeur
-    public LoginScene() {
+    public LoginScene(Stage stage, boolean administrateur) {
         super(new VBox(), 400, 200);
         identifiant = new Label ("Identifiant");
         motDePasse = new Label ("Mot de passe");
@@ -34,6 +35,23 @@ public class LoginScene extends Scene {
         txtMotDePasse = new PasswordField();
         btnValider = new Button ("Valider");
         btnAnnuler = new Button ("Annuler");
+        hbBoutons = new HBox();
+
+        // style des boutons
+        btnValider.setFont(POLICE_BOUTON_TEXTE);
+        btnValider.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        btnValider.setPrefSize(100, 10);
+        btnAnnuler.setFont(POLICE_BOUTON_TEXTE);
+        btnAnnuler.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        btnAnnuler.setPrefSize(100, 10);
+
+        //police labels
+        identifiant.setFont(POLICE_BOUTON_TEXTE);
+        motDePasse.setFont(POLICE_BOUTON_TEXTE);
+
+        //on met les boutons dans la HBox
+        hbBoutons.getChildren().addAll(btnValider, btnAnnuler);
+
 
         myRoot = ((VBox)this.getRoot());
         myRoot.setPadding(new Insets(10));
@@ -47,23 +65,24 @@ public class LoginScene extends Scene {
 
 
         //On instancie des objets à afficher sur le panneau, on les stylise et on les positionne:
-        Label labelTitre= new Label("Accès Administrateur");
+        //Label labelTitre= new Label("Accès Administrateur");
         Label erreurIdentification = new Label( "");
 
-        myRoot.getChildren().add(labelTitre);
+        //myRoot.getChildren().add(labelTitre);
         myRoot.getChildren().add(formulaireId);
         myRoot.getChildren().add(erreurIdentification);
+        myRoot.getChildren().add(hbBoutons);
+
+        hbBoutons.setAlignment(Pos.CENTER);
+        hbBoutons.setSpacing(50);
 
         formulaireId.addRow(0, identifiant, txtIdentifiant);
         formulaireId.addRow(1, motDePasse, txtMotDePasse);
-        formulaireId.addRow(2, btnValider, btnAnnuler);
 
         btnValider.setOnAction(eventAction -> {
-            if (Administrateur.IDENTIFIANT.equals(txtIdentifiant.getText()) && Administrateur.MOTDEPASSE.equals(txtMotDePasse)) {
-                administrateur = true;
-
-                // TODO Retour à la scène Accueil Utilisateur
-
+            if (Administrateur.IDENTIFIANT.equals(txtIdentifiant.getText()) && Administrateur.MOTDEPASSE.equals(txtMotDePasse.getText())) {
+                AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,true);
+                stage.setScene(accueilUtilisateurScene);
 
             } else {
                 erreurIdentification.setText("Il y a une erreur d'identification");
@@ -72,7 +91,8 @@ public class LoginScene extends Scene {
 
         btnAnnuler.setOnAction(eventAction -> {
 
-            // TODO Retour à la scène Accueil Utilisateur
+            AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,false);
+            stage.setScene(accueilUtilisateurScene);
 
         });
 
@@ -130,14 +150,6 @@ public class LoginScene extends Scene {
 
     public void setBtnAnnuler(Button btnAnnuler) {
         this.btnAnnuler = btnAnnuler;
-    }
-
-    public boolean isAdministrateur() {
-        return administrateur;
-    }
-
-    public void setAdministrateur(boolean administrateur) {
-        this.administrateur = administrateur;
     }
 
     public VBox getMyRoot() {

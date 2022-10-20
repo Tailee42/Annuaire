@@ -68,12 +68,14 @@ public class ArbreBinaire {
 
     public static void modification(Stagiaire stagiaireAModifier, Stagiaire stagiaireAJour, RandomAccessFile raf)
             throws IOException {
-        List<Stagiaire> aModifier = new ArrayList<>();
 
-        if (raf.length() != 0) {
-            ajouterUnStagiaire(stagiaireAJour, raf);
-            supprimerUnStagiaire(stagiaireAModifier, raf);
+        if (stagiaireAModifier.compareTo(stagiaireAJour) != 0) {
+            if (raf.length() != 0) {
+                ajouterUnStagiaire(stagiaireAJour, raf);
+                supprimerUnStagiaire(stagiaireAModifier, raf);
+            }
         }
+
     }
 
 }
