@@ -3,7 +3,6 @@ package fr.isika.cda21.annuaire.models;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
-import java.util.Objects;
 
 public class Stagiaire {
     private String nom;
@@ -41,7 +40,7 @@ public class Stagiaire {
 
     @Override
     public String toString() {
-        return this.nom + "| " + this.prenom + "| " + this.departement + "| " + this.promo + "| " + this.anneeDeFormation + " ";
+        return this.nom + this.prenom + this.departement + this.promo + this.anneeDeFormation ;
     }
 
     public int compareTo(Stagiaire myStagiaire) {
@@ -110,7 +109,7 @@ public class Stagiaire {
 
         // promo
         if (stagiaireToFind.getPromo().compareToIgnoreCase(attributVide) != 0) {
-            if (this.getPromo().contains(stagiaireToFind.getPromo().trim())) {
+            if (this.getPromo().toLowerCase().contains(stagiaireToFind.getPromo().toLowerCase().trim())) {
                 promoIdentique = true;
             }
         } else {

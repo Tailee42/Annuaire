@@ -1,5 +1,10 @@
 package fr.isika.cda21.annuaire.vues;
 
+import fr.isika.cda21.annuaire.models.ArbreBinaire;
+import fr.isika.cda21.annuaire.models.GestionFichiers;
+import fr.isika.cda21.annuaire.models.Stagiaire;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +14,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PopUpScene extends Scene implements StyleGeneral{
@@ -21,7 +30,7 @@ public class PopUpScene extends Scene implements StyleGeneral{
     private Label texte;
 
     // constructeur
-    public PopUpScene(Stage stage) {
+    public PopUpScene(Stage stage, Stagiaire stagiaireASupprimer, Stagiaire criteres) {
 
         super(new BorderPane(), 300, 120);
         myRoot = (BorderPane) this.getRoot();
@@ -35,10 +44,14 @@ public class PopUpScene extends Scene implements StyleGeneral{
         texte.setFont(POLICE_BOUTON_TEXTE);
 
         // taille des boutons + centrage dans la HBox
-        boutonValider.setPrefSize(80, 10);
-        boutonAnnuler.setPrefSize(80, 10);
         boutonValider.setFont(POLICE_BOUTON_TEXTE);
+        boutonValider.setStyle(CONTOUR_BOUTON);
+        boutonValider.setPrefSize(100, 10);
+
         boutonAnnuler.setFont(POLICE_BOUTON_TEXTE);
+        boutonAnnuler.setStyle(CONTOUR_BOUTON);
+        boutonAnnuler.setPrefSize(100, 10);
+
         hb.setAlignment(Pos.CENTER);
         hb.setSpacing(100);
 
@@ -47,7 +60,7 @@ public class PopUpScene extends Scene implements StyleGeneral{
         texte.setTextAlignment(TextAlignment.CENTER);
 
         //couleur
-        myRoot.setStyle(("-fx-background-color:rgb(247, 157, 79)"));
+        myRoot.setStyle(COULEUR_FOND);
 
         // ajout des boutons à la HBox
         hb.getChildren().addAll(boutonValider, boutonAnnuler);
@@ -59,17 +72,71 @@ public class PopUpScene extends Scene implements StyleGeneral{
         texte.setTextAlignment(TextAlignment.CENTER);
         BorderPane.setMargin(texte, (new Insets(0, 0, 0, 0)));
 
+        //Style au survole Valider
+        boutonValider.setOnMouseEntered(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                boutonValider.setStyle(FOND_BOUTON);
+            }
+        });
+
+        boutonValider.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+                boutonValider.setStyle("-fx-background-color:rgb(224, 224, 224)");
+				boutonValider.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+
+        //Style au survole Annuler
+        boutonAnnuler.setOnMouseEntered(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                boutonAnnuler.setStyle(FOND_BOUTON);
+            }
+        });
+
+        boutonAnnuler.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+                boutonAnnuler.setStyle("-fx-background-color:rgb(224, 224, 224)");
+				boutonAnnuler.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
         // donner une action aux boutons valider et annuler
         boutonValider.setOnAction(actionEvent -> {
 
-            stage.close();
+            try {
+                ArbreBinaire.supprimerUnStagiaire(stagiaireASupprimer, GestionFichiers.getRaf());
+                List<Stagiaire> listeDeResultat = new ArrayList<>();
+                ArbreBinaire.dbtRechAv(listeDeResultat, criteres, GestionFichiers.getRaf());
 
+                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stage, listeDeResultat, criteres, true);
+                tableStagiaireScene.getStylesheets().add("style.css");
+                stage.setScene(tableStagiaireScene);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         boutonAnnuler.setOnAction(actionEvent -> {
 
-            stage.close();
+            try {
+                List<Stagiaire> listeDeResultat = new ArrayList<>();
+                ArbreBinaire.dbtRechAv(listeDeResultat, criteres, GestionFichiers.getRaf());
 
+                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stage, listeDeResultat, criteres, true);
+                tableStagiaireScene.getStylesheets().add("style.css");
+                stage.setScene(tableStagiaireScene);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
     }

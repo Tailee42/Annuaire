@@ -1,6 +1,8 @@
 package fr.isika.cda21.annuaire.vues;
 
 import fr.isika.cda21.annuaire.models.Administrateur;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,7 +32,7 @@ public class LoginScene extends Scene implements StyleGeneral{
 
     //constructeur
     public LoginScene(Stage stage, boolean administrateur) {
-        super(new VBox(), 400, 200);
+        super(new VBox(), 500, 400);
         identifiant = new Label ("Identifiant");
         motDePasse = new Label ("Mot de passe");
         txtIdentifiant = new TextField();
@@ -37,12 +41,13 @@ public class LoginScene extends Scene implements StyleGeneral{
         btnAnnuler = new Button ("Annuler");
         hbBoutons = new HBox();
 
+
         // style des boutons
         btnValider.setFont(POLICE_BOUTON_TEXTE);
-        btnValider.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        btnValider.setStyle(CONTOUR_BOUTON);
         btnValider.setPrefSize(100, 10);
         btnAnnuler.setFont(POLICE_BOUTON_TEXTE);
-        btnAnnuler.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        btnAnnuler.setStyle(CONTOUR_BOUTON);
         btnAnnuler.setPrefSize(100, 10);
 
         //police labels
@@ -55,7 +60,7 @@ public class LoginScene extends Scene implements StyleGeneral{
 
         myRoot = ((VBox)this.getRoot());
         myRoot.setPadding(new Insets(10));
-        myRoot.setSpacing(10);
+        myRoot.setSpacing(50);
         myRoot.setAlignment(Pos.CENTER);
 
         GridPane formulaireId = new GridPane();
@@ -63,15 +68,35 @@ public class LoginScene extends Scene implements StyleGeneral{
         formulaireId.setHgap(20);
         formulaireId.setAlignment(Pos.CENTER);
 
+        //Reflection pour gridPane
+        Reflection r = new Reflection();
+        r.setFraction(0.7f);
+        formulaireId.setEffect(r);
+
+        //On crée des DropShadow effect
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(5);
 
         //On instancie des objets à afficher sur le panneau, on les stylise et on les positionne:
-        //Label labelTitre= new Label("Accès Administrateur");
+        Label labelTitre= new Label("Accès Administrateur");
         Label erreurIdentification = new Label( "");
+        erreurIdentification.setFont(POLICE_BOUTON_TEXTE);
 
-        //myRoot.getChildren().add(labelTitre);
+        //On applique le style et la taille de police définis dans l'interface StyleGeneral au titre en appelant les constantes :
+        labelTitre.setFont(POLICE_TITRE);
+        labelTitre.setStyle(GRAS);
+        labelTitre.setStyle(POLICE_COULEUR);
+
+        //On applique les DropShadow effect à nos éléments
+        labelTitre.setEffect(dropShadow);
+
+        myRoot.getChildren().add(labelTitre);
         myRoot.getChildren().add(formulaireId);
         myRoot.getChildren().add(erreurIdentification);
         myRoot.getChildren().add(hbBoutons);
+
+        // couleur de fond
+        myRoot.setStyle(COULEUR_FOND);
 
         hbBoutons.setAlignment(Pos.CENTER);
         hbBoutons.setSpacing(50);
@@ -79,9 +104,12 @@ public class LoginScene extends Scene implements StyleGeneral{
         formulaireId.addRow(0, identifiant, txtIdentifiant);
         formulaireId.addRow(1, motDePasse, txtMotDePasse);
 
+
+        // -----Actions Boutons ------
         btnValider.setOnAction(eventAction -> {
             if (Administrateur.IDENTIFIANT.equals(txtIdentifiant.getText()) && Administrateur.MOTDEPASSE.equals(txtMotDePasse.getText())) {
                 AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,true);
+                accueilUtilisateurScene.getStylesheets().add("style.css");
                 stage.setScene(accueilUtilisateurScene);
 
             } else {
@@ -92,8 +120,41 @@ public class LoginScene extends Scene implements StyleGeneral{
         btnAnnuler.setOnAction(eventAction -> {
 
             AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,false);
+            accueilUtilisateurScene.getStylesheets().add("style.css");
             stage.setScene(accueilUtilisateurScene);
 
+        });
+
+        //Changement de couloeur au survol des buttons
+        btnValider.setOnMouseEntered(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                btnValider.setStyle(FOND_BOUTON);
+            }
+        });
+        btnValider.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				btnValider.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                btnValider.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+
+        btnAnnuler.setOnMouseEntered(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                btnAnnuler.setStyle(FOND_BOUTON);
+            }
+        });
+        btnAnnuler.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				btnAnnuler.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                btnAnnuler.setStyle(CONTOUR_BOUTON);
+            }
         });
 
 

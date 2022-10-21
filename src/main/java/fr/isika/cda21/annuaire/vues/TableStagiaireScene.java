@@ -1,12 +1,11 @@
 package fr.isika.cda21.annuaire.vues;
 
-import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.ImpressionPDF;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -24,7 +24,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 
 public class TableStagiaireScene extends Scene implements StyleGeneral{
@@ -40,9 +39,9 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
     private Label titre;
 
     // constructeur
-    public TableStagiaireScene(Stage stage, List<Stagiaire> listeDeStagiaires, Boolean administrateur) {
+    public TableStagiaireScene(Stage stage, List<Stagiaire> listeDeStagiaires,Stagiaire criteres, Boolean administrateur) {
 
-        super(new BorderPane(), 800, 500);
+        super(new BorderPane(), 1000, 600);
         myRoot = (BorderPane) this.getRoot();
 
         myRoot.setPadding(new Insets(50, 50, 10, 50));
@@ -53,8 +52,18 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonRetour = new Button("Retour");
         hb = new HBox();
         monTableau = new AnchorPane();
-        titre = new Label("Résultat de la recherche");
+        titre = new Label("Liste des stagiaires");
         titre.setFont(POLICE_TITRE);
+        titre.setStyle(GRAS);
+        titre.setStyle(POLICE_COULEUR);
+
+        //On crée des DropShadow effect
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+
+        //On applique les DropShadow effect à nos éléments
+        titre.setEffect(dropShadow);
 
         ObservableList<Stagiaire> observableStagiaires = FXCollections.observableArrayList(listeDeStagiaires);
 
@@ -116,15 +125,20 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         monTableau.setBottomAnchor(tableView, 0.);
 
         // dimension des boutons
-        boutonModifier.setPrefSize(110, 10);
-        boutonSupprimer.setPrefSize(110, 10);
-        boutonImprimer.setPrefSize(110, 10);
-        boutonRetour.setPrefSize(110, 10);
+        boutonModifier.setPrefSize(160, 10);
+        boutonSupprimer.setPrefSize(160, 10);
+        boutonImprimer.setPrefSize(160, 10);
+        boutonRetour.setPrefSize(160, 10);
+
+        //Pour faire apparitre les boutons supprimer ou modifier en fonction du compte
+        boutonModifier.setVisible(administrateur);
+        boutonSupprimer.setVisible(administrateur);
+
 
         // couleurs et style
-        tableView.setStyle("-fx-background-color:rgb(247, 157, 79)");
+        tableView.setStyle(CONTOUR_TABLEAU);
 
-        boutonModifier.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        boutonModifier.setStyle(CONTOUR_BOUTON);
         Image imgModifier = new Image(("Modifier.png"));
         ImageView imgViewModifier = new ImageView(imgModifier);
         imgViewModifier.setFitHeight(15);
@@ -132,7 +146,7 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonModifier.setGraphic(imgViewModifier);
         boutonModifier.setFont(POLICE_BOUTON_TEXTE);
 
-        boutonSupprimer.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        boutonSupprimer.setStyle(CONTOUR_BOUTON);
         Image imgSupprimer = new Image(("Supprimer.png"));
         ImageView imgViewSupprimer = new ImageView(imgSupprimer);
         imgViewSupprimer.setFitHeight(17);
@@ -140,7 +154,7 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonSupprimer.setGraphic(imgViewSupprimer);
         boutonSupprimer.setFont(POLICE_BOUTON_TEXTE);
 
-        boutonImprimer.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        boutonImprimer.setStyle(CONTOUR_BOUTON);
         Image imgImprimer = new Image(("Imprimer.png"));
         ImageView imgViewImprimer = new ImageView(imgImprimer);
         imgViewImprimer.setFitHeight(17);
@@ -148,7 +162,7 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonImprimer.setGraphic(imgViewImprimer);
         boutonImprimer.setFont(POLICE_BOUTON_TEXTE);
 
-        boutonRetour.setStyle("-fx-border-color:rgb(247, 157, 79)");
+        boutonRetour.setStyle(CONTOUR_BOUTON);
         Image imgRetour = new Image(("Retour.png"));
         ImageView imgViewRetour = new ImageView(imgRetour);
         imgViewRetour.setFitHeight(15);
@@ -165,12 +179,14 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
         // on centre les boutons de la HBox et on les espace
         hb.setAlignment(Pos.CENTER);
-        hb.setSpacing(100);
+        hb.setSpacing(80);
 
         // on place l'anchorpane, la HBox et le label dans le borderpane + espacements entre les composants + centrage du titre
         myRoot.setCenter(monTableau);
         myRoot.setBottom(hb);
         myRoot.setTop(titre);
+        myRoot.setStyle(COULEUR_FOND);
+
         BorderPane.setMargin(monTableau,(new Insets(5, 10, 20, 10)));
         BorderPane.setAlignment(titre, Pos.BASELINE_CENTER);
 
@@ -178,18 +194,15 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonSupprimer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // creation du stagiaire a supprimer depuis la liste
                 Stagiaire stagiaireASupprimer = tableView.getSelectionModel().getSelectedItem();
+                if (stagiaireASupprimer != null) {
+                    stage.setScene(new PopUpScene(stage, stagiaireASupprimer, criteres));
 
-                if(stagiaireASupprimer != null) {
-                    try {//TODO: Liaison popup
-                        ArbreBinaire.supprimerUnStagiaire(stagiaireASupprimer, GestionFichiers.getRaf());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else {
-                    //TODO: voir s'il est possible d'afficher le texte pour une durée donnée, ajout couleur
+                } else {
+                    // TODO: voir s'il est possible d'afficher le texte pour une durée donnée, ajout couleur
                     Label attention = new Label("Veuillez selectionner un stagiaire");
-                    attention.setFont(new Font("Arial", 25));
+                    attention.setFont(POLICE_TITRE);
                     myRoot.setTop(attention);
                 }
             }
@@ -216,7 +229,16 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
             public void handle(ActionEvent event) {
 
                 Stagiaire stagiaireAModifier = tableView.getSelectionModel().getSelectedItem();
-                stage.setScene(new ModificationScene(stage, stagiaireAModifier));
+                if (stagiaireAModifier != null) {
+                    ModificationScene modificationScene = new ModificationScene(stage, stagiaireAModifier, criteres);
+                    modificationScene.getStylesheets().add("style.css");
+                    stage.setScene(modificationScene);
+                } else {
+                    // TODO: voir s'il est possible d'afficher le texte pour une durée donnée, ajout couleur
+                    Label attention = new Label("Veuillez selectionner un stagiaire");
+                    attention.setFont(POLICE_TITRE);
+                    myRoot.setTop(attention);
+                }
             }
 
         });
@@ -225,8 +247,99 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(new AccueilUtilisateurScene(stage, administrateur));
+                AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage, administrateur);
+                accueilUtilisateurScene.getStylesheets().add("style.css");
+                stage.setScene(accueilUtilisateurScene);
+            }
+        });
 
+
+        //changement couleur bouton au passage de la souris
+        boutonModifier.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                boutonModifier.setStyle(FOND_BOUTON);
+            }
+        });
+
+
+        boutonModifier.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				boutonModifier.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                boutonModifier.setStyle(CONTOUR_BOUTON);
+
+            }
+        });
+
+
+        boutonSupprimer.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                boutonSupprimer.setStyle(FOND_BOUTON);
+            }
+        });
+        boutonSupprimer.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				boutonSupprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                boutonSupprimer.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+        boutonSupprimer.setOnMouseClicked(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                boutonSupprimer.setStyle(FOND_BOUTON);
+            }
+        });
+        boutonSupprimer.setOnMouseReleased(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				boutonSupprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                boutonSupprimer.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+
+
+        boutonImprimer.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                boutonImprimer.setStyle(FOND_BOUTON);
+            }
+        });
+        boutonImprimer.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				boutonImprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                boutonImprimer.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+
+
+        boutonRetour.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                boutonRetour.setStyle(FOND_BOUTON);
+            }
+        });
+        boutonRetour.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+//				boutonRetour.setStyle("-fx-background-color:rgb(224, 224, 224)");
+                boutonRetour.setStyle(CONTOUR_BOUTON);
             }
         });
     }

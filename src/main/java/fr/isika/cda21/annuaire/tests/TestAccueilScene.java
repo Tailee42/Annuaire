@@ -15,6 +15,7 @@ public class TestAccueilScene extends Application {
 
         //On crée la scene en utilisant notre constructeur AcceuilUtilisateurScene
         AccueilUtilisateurScene scene = new AccueilUtilisateurScene(primaryStage,false);
+        scene.getStylesheets().add("style.css");
 
         //On associe la stage et la scene
         primaryStage.setScene(scene);

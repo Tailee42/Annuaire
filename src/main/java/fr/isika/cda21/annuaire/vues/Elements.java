@@ -6,7 +6,7 @@ public interface Elements {
     public default void Departement(ChoiceBox<String> cb){
 
         cb.getItems().addAll("Départements", "01-Ain", "02-Aisne", "03-Allier", "04-Alpes-de-Haute-Provence",
-                "05-Hautes-Alpes", "06- lpes-Maritimes", "07-Ardèche", "08-Ardennes", "09-Ariège", "10- ube", "11-Aude",
+                "05-Hautes-Alpes", "06-Alpes-Maritimes", "07-Ardèche", "08-Ardennes", "09-Ariège", "10-Aube", "11-Aude",
                 "12-Aveyron", "13-Bouches-du-Rhône", "14-Calvados", "15-Cantal", "16-Charente", "17-Charente-Maritime",
                 "18-Cher", "19-Corrèze", "2A-Corse-du-Sud", "2B-Haute-Corse", "21-Côte-d'Or", "22-Côtes-d'Armor",
                 "23-Creuse", "24-Dordogne", "25-Doubs", "26-Drôme", "27-Eure", "28-Eure-et-Loir", "29-Finistère",
