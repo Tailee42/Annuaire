@@ -21,7 +21,7 @@ public class TestPopup extends Application {
         Stagiaire criteres = new Stagiaire(null, null, null, null, 0);
 
         PopUpScene scene = new PopUpScene(primaryStage, stagiaireASupprimer, criteres);
-
+        scene.getStylesheets().add("style.css");
         //on interdit le redimensionnement du stage
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

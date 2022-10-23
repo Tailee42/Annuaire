@@ -64,10 +64,15 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
         // On instancie les labels, champs de texte et boutons
         Label nom = new Label("Nom: ");
         TextField txtNom = new TextField();
+        txtNom.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label prenom = new Label("Prénom: ");
         TextField txtPrenom = new TextField();
+        txtPrenom.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label promo = new Label("Promotion: ");
         TextField txtPromo = new TextField();
+        txtPromo.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         //département
         Label departement = new Label("Lieu d'habitation: ");
@@ -75,10 +80,12 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
         Departement(txtDepartement); //ajoute tous les départements à la choiceBox
         txtDepartement.getSelectionModel().select(0);
         txtDepartement.setPrefSize(200, 10);
+        txtDepartement.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         // Ajout de l'année de formation
         Label anneeDeFormation = new Label("Année de formation: ");
         TextField txtAnneeDeFormation = new TextField();
+        txtAnneeDeFormation.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         // On instancie une HBox pour y placer la GridPane et 2 HBox pour y placer les 4 boutons que l'on va instancier juste
         // après:

@@ -41,14 +41,17 @@ public class LoginScene extends Scene implements StyleGeneral{
         btnAnnuler = new Button ("Annuler");
         hbBoutons = new HBox();
 
+        //On fixe la taille des champs de texte avec la constante créée dans le fichier StyleGeneral:
+        txtIdentifiant.setPrefWidth(TAILLE_CHAMP_TEXTE);
+        txtMotDePasse.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         // style des boutons
         btnValider.setFont(POLICE_BOUTON_TEXTE);
         btnValider.setStyle(CONTOUR_BOUTON);
-        btnValider.setPrefSize(100, 10);
+        btnValider.setPrefSize(200, 10);
         btnAnnuler.setFont(POLICE_BOUTON_TEXTE);
         btnAnnuler.setStyle(CONTOUR_BOUTON);
-        btnAnnuler.setPrefSize(100, 10);
+        btnAnnuler.setPrefSize(200, 10);
 
         //police labels
         identifiant.setFont(POLICE_BOUTON_TEXTE);
@@ -60,7 +63,7 @@ public class LoginScene extends Scene implements StyleGeneral{
 
         myRoot = ((VBox)this.getRoot());
         myRoot.setPadding(new Insets(10));
-        myRoot.setSpacing(50);
+        myRoot.setSpacing(25);
         myRoot.setAlignment(Pos.CENTER);
 
         GridPane formulaireId = new GridPane();
@@ -68,10 +71,10 @@ public class LoginScene extends Scene implements StyleGeneral{
         formulaireId.setHgap(20);
         formulaireId.setAlignment(Pos.CENTER);
 
-        //Reflection pour gridPane
+       /* //Reflection pour gridPane
         Reflection r = new Reflection();
         r.setFraction(0.7f);
-        formulaireId.setEffect(r);
+        formulaireId.setEffect(r);*/
 
         //On crée des DropShadow effect
         DropShadow dropShadow = new DropShadow();

@@ -24,6 +24,7 @@ public class TestResultatRecherche extends Application {
         Stagiaire criteres = new Stagiaire(null, null, null, null, 0);
 
         TableStagiaireScene scene = new TableStagiaireScene(primaryStage, listeDeStagiaires, criteres, true);
+        scene.getStylesheets().add("style.css");
         primaryStage.setTitle("ANNUAIRE");
         //on interdit le redimensionnement du stage
         primaryStage.setResizable(false);

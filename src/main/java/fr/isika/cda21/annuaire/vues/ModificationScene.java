@@ -57,18 +57,27 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
         Label nom = new Label("Nom: ");
         TextField txtNom = new TextField();
         txtNom.setText(stagiaireAModifier.getNom().trim());
+        txtNom.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label prenom = new Label("Prénom: ");
         TextField txtPrenom = new TextField();
         txtPrenom.setText(stagiaireAModifier.getPrenom().trim());
+        txtPrenom.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label promo = new Label("Promotion: ");
         TextField txtPromo = new TextField();
         txtPromo.setText(stagiaireAModifier.getPromo().trim());
+        txtPromo.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label departement = new Label("Lieu d'habitation: ");
         TextField txtDepartement = new TextField();
         txtDepartement.setText(stagiaireAModifier.getDepartement().trim());
+        txtDepartement.setPrefWidth(TAILLE_CHAMP_TEXTE);
+
         Label anneeDeFormation = new Label("Année de formation: ");
         TextField txtAnneeDeFormation = new TextField();
         txtAnneeDeFormation.setText("" + stagiaireAModifier.getAnneeDeFormation());
+        txtAnneeDeFormation.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         // On instancie une HBox pour y placer la GridPane et 2 HBox pour y placer les 4
         // boutons que l'on va instancier juste après:
@@ -86,6 +95,7 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
 
         // On instancie un bouton pour rechercher un stagiaire:
         Button btnValider = new Button("Modifier");// lance méthode modifier
+        btnValider.setPrefWidth(100);
         btnValider.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -118,6 +128,7 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
 
         // On instancie un bouton pour ajouter un stagiaire:
         Button btnAnnuler = new Button("Annuler");
+        btnAnnuler.setPrefWidth(100);
         btnAnnuler.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -137,6 +148,16 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
 
             }
         });
+
+        //taille des boutons
+        btnValider.setPrefSize(200, 10);
+        btnAnnuler.setPrefSize(200, 10);
+
+        //couleurs et style des boutons
+        btnValider.setStyle(CONTOUR_BOUTON);
+        btnValider.setFont(POLICE_BOUTON_TEXTE);
+        btnAnnuler.setStyle(CONTOUR_BOUTON);
+        btnAnnuler.setFont(POLICE_BOUTON_TEXTE);
 
         // On relie les boutons aux HBox:
         hBoxValiderAnnuler.getChildren().addAll(btnValider, btnAnnuler);

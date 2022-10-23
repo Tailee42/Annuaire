@@ -9,6 +9,9 @@ public interface StyleGeneral {
 
     public static final Font POLICE_TITRE = (new Font("Courier New", 28));
 
+    //taille des champs de texte
+    public static final int TAILLE_CHAMP_TEXTE = 200;
+
     //choix du style et de la couleur de la police:
     public static final String POLICE_COULEUR = ("-fx-text-fill: rgb(247, 157, 79)");
 
@@ -18,9 +21,7 @@ public interface StyleGeneral {
 
     public static final String FOND_BOUTON = "-fx-background-color:rgb(247, 157, 79)";
 
-    public static final String FOND_BACKGROUND = "-fx-background-color:rgb(250, 250, 250)";
-
-    public static final String CONTOUR_TABLEAU = "-fx-background-color:rgb(0, 0, 0)";
+    public static final String CONTOUR_TABLEAU = "-fx-border-color:rgb(0, 0, 0)";
 
     //couleur de fond des pop-ups
     public static final String COULEUR_FOND = ("-fx-background-color:#A9A9A9");

@@ -15,6 +15,7 @@ public class TestLoginScene extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         LoginScene scene = new LoginScene(primaryStage, false);
+        scene.getStylesheets().add("style.css");
         primaryStage.setTitle("ANNUAIRE");
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("LogoIsika.jpg"));

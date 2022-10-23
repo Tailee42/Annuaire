@@ -137,6 +137,7 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
         // couleurs et style
         tableView.setStyle(CONTOUR_TABLEAU);
+        monTableau.setStyle(CONTOUR_TABLEAU);
 
         boutonModifier.setStyle(CONTOUR_BOUTON);
         Image imgModifier = new Image(("Modifier.png"));
