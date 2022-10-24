@@ -40,7 +40,7 @@ public class PopUpScene extends Scene implements StyleGeneral{
         hb = new HBox();
         boutonValider = new Button("Valider");
         boutonAnnuler = new Button("Annuler");
-        texte = new Label("Vous allez supprimer le stagiaire: \n\n" + stagiaireASupprimer.getNom()+"\n" +stagiaireASupprimer.getPrenom()+"\n"
+        texte = new Label("Vous allez supprimer le stagiaire : \n\n" + stagiaireASupprimer.getNom()+"\n" +stagiaireASupprimer.getPrenom()+"\n"
                 +stagiaireASupprimer.getDepartement()+"\n"+stagiaireASupprimer.getPromo()+"\n"+stagiaireASupprimer.getAnneeDeFormation()+"                 "
                 + "\n \n Voulez-vous continuer ?");
         texte.setFont(POLICE_BOUTON_TEXTE);

@@ -49,7 +49,6 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
 
         //On applique le style et la taille de police définis dans l'interface StyleGeneral au titre en appelant les constantes :
         labelTitre.setFont(POLICE_TITRE);
-        labelTitre.setStyle(GRAS);
         labelTitre.setStyle(POLICE_COULEUR);
 
         //On crée des DropShadow effect
@@ -57,33 +56,36 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
         dropShadow.setOffsetX(5);
         dropShadow.setOffsetY(5);
 
-
         //On applique les DropShadow effect à nos éléments
         labelTitre.setEffect(dropShadow);
 
         // On instancie les labels, champs de texte et boutons
-        Label nom = new Label("Nom: ");
+        Label nom = new Label("Nom ");
+        nom.setStyle(GRAS);
         TextField txtNom = new TextField();
         txtNom.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label prenom = new Label("Prénom: ");
+        Label prenom = new Label("Prénom ");
+        prenom.setStyle(GRAS);
         TextField txtPrenom = new TextField();
         txtPrenom.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label promo = new Label("Promotion: ");
+        Label promo = new Label("Promotion ");
+        promo.setStyle(GRAS);
         TextField txtPromo = new TextField();
         txtPromo.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         //département
-        Label departement = new Label("Lieu d'habitation: ");
+        Label departement = new Label("Lieu d'habitation ");
+        departement.setStyle(GRAS);
         ChoiceBox<String> txtDepartement = new ChoiceBox<String>();
         Departement(txtDepartement); //ajoute tous les départements à la choiceBox
         txtDepartement.getSelectionModel().select(0);
-        txtDepartement.setPrefSize(200, 10);
         txtDepartement.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
         // Ajout de l'année de formation
-        Label anneeDeFormation = new Label("Année de formation: ");
+        Label anneeDeFormation = new Label("Année de formation ");
+        anneeDeFormation.setStyle(GRAS);
         TextField txtAnneeDeFormation = new TextField();
         txtAnneeDeFormation.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
@@ -178,7 +180,6 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
             hBoxConnexionListe.getChildren().addAll(btnAccesAdmin, btnAccesListe);
         }
 
-
         // On intègre le formulaire au GridPane:
         formulaire.addRow(0, nom, txtNom);
 
@@ -218,7 +219,7 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
 
             @Override
             public void handle(Event arg0) {
-                btnRechercher.setStyle(FOND_BOUTON);
+                //btnRechercher.setStyle(FOND_BOUTON);
             }
         });
 

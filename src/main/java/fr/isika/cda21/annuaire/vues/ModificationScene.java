@@ -54,27 +54,27 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
         labelTitre.setEffect(dropShadow);
 
         // On instancie les labels, champs de texte et boutons
-        Label nom = new Label("Nom: ");
+        Label nom = new Label("Nom ");
         TextField txtNom = new TextField();
         txtNom.setText(stagiaireAModifier.getNom().trim());
         txtNom.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label prenom = new Label("Prénom: ");
+        Label prenom = new Label("Prénom ");
         TextField txtPrenom = new TextField();
         txtPrenom.setText(stagiaireAModifier.getPrenom().trim());
         txtPrenom.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label promo = new Label("Promotion: ");
+        Label promo = new Label("Promotion ");
         TextField txtPromo = new TextField();
         txtPromo.setText(stagiaireAModifier.getPromo().trim());
         txtPromo.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label departement = new Label("Lieu d'habitation: ");
+        Label departement = new Label("Lieu d'habitation ");
         TextField txtDepartement = new TextField();
         txtDepartement.setText(stagiaireAModifier.getDepartement().trim());
         txtDepartement.setPrefWidth(TAILLE_CHAMP_TEXTE);
 
-        Label anneeDeFormation = new Label("Année de formation: ");
+        Label anneeDeFormation = new Label("Année de formation ");
         TextField txtAnneeDeFormation = new TextField();
         txtAnneeDeFormation.setText("" + stagiaireAModifier.getAnneeDeFormation());
         txtAnneeDeFormation.setPrefWidth(TAILLE_CHAMP_TEXTE);
@@ -94,7 +94,7 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
         hBoxValiderAnnuler.setSpacing(150);
 
         // On instancie un bouton pour rechercher un stagiaire:
-        Button btnValider = new Button("Modifier");// lance méthode modifier
+        Button btnValider = new Button("Valider");// lance méthode modifier
         btnValider.setPrefWidth(100);
         btnValider.setOnAction(new EventHandler<ActionEvent>() {
 

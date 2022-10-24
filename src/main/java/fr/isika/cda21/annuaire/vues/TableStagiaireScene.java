@@ -292,23 +292,6 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
             }
         });
 
-        boutonSupprimer.setOnMouseClicked(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
-            // au passage de la souris
-
-            @Override
-            public void handle(Event arg0) {
-                boutonSupprimer.setStyle(FOND_BOUTON);
-            }
-        });
-        boutonSupprimer.setOnMouseReleased(new EventHandler<Event>() {
-            @Override
-            public void handle(Event arg0) {
-//				boutonSupprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
-                boutonSupprimer.setStyle(CONTOUR_BOUTON);
-            }
-        });
-
-
 
         boutonImprimer.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
             // au passage de la souris

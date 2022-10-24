@@ -11,10 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class LoginScene extends Scene implements StyleGeneral{
@@ -87,7 +88,6 @@ public class LoginScene extends Scene implements StyleGeneral{
 
         //On applique le style et la taille de police définis dans l'interface StyleGeneral au titre en appelant les constantes :
         labelTitre.setFont(POLICE_TITRE);
-        labelTitre.setStyle(GRAS);
         labelTitre.setStyle(POLICE_COULEUR);
 
         //On applique les DropShadow effect à nos éléments

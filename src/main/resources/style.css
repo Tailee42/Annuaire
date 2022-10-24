@@ -1,4 +1,6 @@
-
+.root {
+    -fx-font-family: "Courier New";
+}
 
 .table-view .column-header-background{
     -fx-background-color: rgb(247,157,79);
@@ -8,11 +10,6 @@
     -fx-background-color: transparent;
 }
 
-.text-field {
-    -fx-font-family: "Courier New";
+.button {
+    -fx-font-weight: BOLD;
 }
-
-.choice-box {
-    -fx-font-family: "Courier New";
-}
-
