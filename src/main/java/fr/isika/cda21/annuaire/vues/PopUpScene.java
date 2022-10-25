@@ -30,7 +30,7 @@ public class PopUpScene extends Scene implements StyleGeneral{
     private Label texte;
 
     // constructeur
-    public PopUpScene(Stage stage, Stagiaire stagiaireASupprimer, Stagiaire criteres) {
+    public PopUpScene(Stage stagePopup, Stage stageTableau, Stagiaire stagiaireASupprimer, Stagiaire criteres) {
 
         super(new BorderPane(), 500, 230);
         myRoot = (BorderPane) this.getRoot();
@@ -86,7 +86,6 @@ public class PopUpScene extends Scene implements StyleGeneral{
         boutonValider.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-                boutonValider.setStyle("-fx-background-color:rgb(224, 224, 224)");
 				boutonValider.setStyle(CONTOUR_BOUTON);
             }
         });
@@ -104,7 +103,6 @@ public class PopUpScene extends Scene implements StyleGeneral{
         boutonAnnuler.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-                boutonAnnuler.setStyle("-fx-background-color:rgb(224, 224, 224)");
 				boutonAnnuler.setStyle(CONTOUR_BOUTON);
             }
         });
@@ -117,9 +115,10 @@ public class PopUpScene extends Scene implements StyleGeneral{
                 List<Stagiaire> listeDeResultat = new ArrayList<>();
                 ArbreBinaire.dbtRechAv(listeDeResultat, criteres, GestionFichiers.getRaf());
 
-                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stage, listeDeResultat, criteres, true);
+                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stageTableau, listeDeResultat, criteres, true);
                 tableStagiaireScene.getStylesheets().add("style.css");
-                stage.setScene(tableStagiaireScene);
+                stageTableau.setScene(tableStagiaireScene);
+                stagePopup.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,9 +131,10 @@ public class PopUpScene extends Scene implements StyleGeneral{
                 List<Stagiaire> listeDeResultat = new ArrayList<>();
                 ArbreBinaire.dbtRechAv(listeDeResultat, criteres, GestionFichiers.getRaf());
 
-                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stage, listeDeResultat, criteres, true);
+                TableStagiaireScene tableStagiaireScene =new TableStagiaireScene(stageTableau, listeDeResultat, criteres, true);
                 tableStagiaireScene.getStylesheets().add("style.css");
-                stage.setScene(tableStagiaireScene);
+                stageTableau.setScene(tableStagiaireScene);
+                stagePopup.close();
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -8,6 +8,7 @@ import fr.isika.cda21.annuaire.models.ArbreBinaire;
 import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -104,7 +105,11 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
                     int anneeInt = 0;
 
                     if(!txtAnneeDeFormation.getText().trim().equals("")) {
-                        anneeInt = Integer.parseInt(txtAnneeDeFormation.getText().trim());
+                        try {
+                            anneeInt = Integer.parseInt(txtAnneeDeFormation.getText().trim());
+                        } catch (NumberFormatException e) {
+                            txtAnneeDeFormation.clear();
+                        }
                     }
 
                     Stagiaire stagiaireAJour = new Stagiaire(txtNom.getText(), txtPrenom.getText(),
@@ -189,6 +194,36 @@ public class ModificationScene extends Scene implements Elements, StyleGeneral {
         promo.setFont(POLICE_BOUTON_TEXTE);
         departement.setFont(POLICE_BOUTON_TEXTE);
         anneeDeFormation.setFont(POLICE_BOUTON_TEXTE);
+
+        btnValider.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                btnValider.setStyle(FOND_BOUTON);
+            }
+        });
+        btnValider.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+                btnValider.setStyle(CONTOUR_BOUTON);
+            }
+        });
+
+        btnAnnuler.setOnMouseEntered(new EventHandler<Event>() { // OnMouseEntered = évenement qui va se produire
+            // au passage de la souris
+
+            @Override
+            public void handle(Event arg0) {
+                btnAnnuler.setStyle(FOND_BOUTON);
+            }
+        });
+        btnAnnuler.setOnMouseExited(new EventHandler<Event>() {
+            @Override
+            public void handle(Event arg0) {
+                btnAnnuler.setStyle(CONTOUR_BOUTON);
+            }
+        });
 
     }
 }

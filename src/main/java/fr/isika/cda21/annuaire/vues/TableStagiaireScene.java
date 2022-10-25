@@ -94,7 +94,7 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
                 new PropertyValueFactory<Stagiaire, String>("departement"));
 
         // promo
-        TableColumn<Stagiaire, String> promoCol = new TableColumn<Stagiaire, String>("Promo");
+        TableColumn<Stagiaire, String> promoCol = new TableColumn<Stagiaire, String>("Promotion");
         promoCol.setMinWidth(100);
 
         promoCol.setCellValueFactory( // objet qui va construire la valeur à afficher dans la case
@@ -196,10 +196,18 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
             @Override
             public void handle(ActionEvent event) {
                 // creation du stagiaire a supprimer depuis la liste
+                Stage stagePopup = new Stage();
+
+
+
                 Stagiaire stagiaireASupprimer = tableView.getSelectionModel().getSelectedItem();
                 if (stagiaireASupprimer != null) {
-                    stage.setScene(new PopUpScene(stage, stagiaireASupprimer, criteres));
 
+                    stagePopup.setResizable(false);
+                    stagePopup.setTitle("ANNUAIRE");
+                    stagePopup.setScene(new PopUpScene(stagePopup, stage, stagiaireASupprimer, criteres));
+                    stagePopup.getIcons().add(new Image("LogoIsika.jpg"));
+                    stagePopup.show();
                 } else {
                     // TODO: voir s'il est possible d'afficher le texte pour une durée donnée, ajout couleur
                     Label attention = new Label("Veuillez selectionner un stagiaire");
@@ -269,7 +277,6 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonModifier.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-//				boutonModifier.setStyle("-fx-background-color:rgb(224, 224, 224)");
                 boutonModifier.setStyle(CONTOUR_BOUTON);
 
             }
@@ -287,7 +294,6 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonSupprimer.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-//				boutonSupprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
                 boutonSupprimer.setStyle(CONTOUR_BOUTON);
             }
         });
@@ -304,7 +310,6 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonImprimer.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-//				boutonImprimer.setStyle("-fx-background-color:rgb(224, 224, 224)");
                 boutonImprimer.setStyle(CONTOUR_BOUTON);
             }
         });
@@ -322,7 +327,6 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
         boutonRetour.setOnMouseExited(new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-//				boutonRetour.setStyle("-fx-background-color:rgb(224, 224, 224)");
                 boutonRetour.setStyle(CONTOUR_BOUTON);
             }
         });

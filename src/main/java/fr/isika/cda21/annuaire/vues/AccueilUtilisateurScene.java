@@ -219,7 +219,7 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
 
             @Override
             public void handle(Event arg0) {
-                //btnRechercher.setStyle(FOND_BOUTON);
+                btnRechercher.setStyle(FOND_BOUTON);
             }
         });
 
@@ -352,7 +352,12 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
                 int annee = 0;
 
                 if (!anneeString.equals("")){
-                    annee = Integer.parseInt(anneeString);
+                    try {
+                        annee = Integer.parseInt(anneeString);
+                    } catch (NumberFormatException e) {
+                        validationAjout.setText("L'année de formation n'est pas un nombre.");
+                        txtAnneeDeFormation.clear();
+                    }
                 }
 
                 if(!nom.equals("") && !prenom.equals("") && !promotion.equals("") && !departementCourt.equals("Dé") && annee !=0 ){
@@ -393,7 +398,12 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
                 int annee = 0;
 
                 if (!anneeString.equals("")){
-                    annee = Integer.parseInt(anneeString);
+                    try {
+                        annee = Integer.parseInt(anneeString);
+                    } catch (NumberFormatException e) {
+                        validationAjout.setText("L'année de formation n'est pas un nombre.");
+                        txtAnneeDeFormation.clear();
+                    }
                 }
 
                 Stagiaire criteres = new Stagiaire(nom, prenom, departement, promotion, annee);
