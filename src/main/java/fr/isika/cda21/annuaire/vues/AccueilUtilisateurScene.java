@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccueilUtilisateurScene extends Scene implements Elements, StyleGeneral{
+public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
 
     // On instancie un bouton pour rechercher un stagiaire :
     private final StyledButton btnRechercher;
@@ -72,7 +72,10 @@ public class AccueilUtilisateurScene extends Scene implements Elements, StyleGen
         //département
         Label departement = new Label("Lieu d'habitation ");
         txtDepartement = new ChoiceBox<String>();
-        Departement(txtDepartement); //ajoute tous les départements à la choiceBox
+        txtDepartement.getItems().add("Départements");
+        txtDepartement.getItems().addAll(Departement.getList(false));
+        txtDepartement.getItems().add("Etranger");
+        //Departement(txtDepartement); //ajoute tous les départements à la choiceBox
         txtDepartement.getSelectionModel().select(0);
         txtDepartement.setPrefWidth(TAILLE_CHAMP_TEXTE);
 

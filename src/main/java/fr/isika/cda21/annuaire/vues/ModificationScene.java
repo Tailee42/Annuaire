@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ModificationScene extends Scene implements Elements, StyleGeneral {
+public class ModificationScene extends Scene implements StyleGeneral {
 
     private final StyledButton btnValider;
     private final StyledButton btnAnnuler;
