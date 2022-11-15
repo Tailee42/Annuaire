@@ -1,7 +1,6 @@
 package fr.isika.cda21.annuaire.vues;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 
 import javafx.geometry.Insets;
@@ -13,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,14 @@ public class PopUpScene extends Scene implements StyleGeneral {
 
     private final StyledButton boutonValider;
     private final StyledButton boutonAnnuler;
+    private final ArbreBinaire arbre;
 
     // constructeur
-    public PopUpScene(Stage stagePopup, Stage stageTableau, Stagiaire stagiaireASupprimer, Stagiaire criteres) {
+    public PopUpScene(Stage stagePopup, Stage stageTableau, Stagiaire stagiaireASupprimer, Stagiaire criteres) throws FileNotFoundException {
 
         super(new BorderPane(), 500, 230);
+        arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
+
         // attributs
         BorderPane myRoot = (BorderPane) this.getRoot();
 
@@ -69,7 +72,7 @@ public class PopUpScene extends Scene implements StyleGeneral {
         boutonValider.setOnAction(actionEvent -> {
 
             try {
-                ArbreBinaire.supprimerUnStagiaire(stagiaireASupprimer, GestionFichiers.getRaf());
+                arbre.supprimerUnStagiaire(stagiaireASupprimer);
                 contructionTableau(criteres, stageTableau, stagePopup);
 
             } catch (IOException e) {
@@ -89,9 +92,9 @@ public class PopUpScene extends Scene implements StyleGeneral {
         });
     }
 
-    private static void contructionTableau(Stagiaire criteres, Stage stageTableau, Stage stagePopup) throws IOException {
+    private void contructionTableau(Stagiaire criteres, Stage stageTableau, Stage stagePopup) throws IOException {
         List<Stagiaire> listeDeResultat = new ArrayList<>();
-        ArbreBinaire.dbtRechAv(listeDeResultat, criteres, GestionFichiers.getRaf());
+        arbre.dbtRechAv(listeDeResultat, criteres);
 
         TableStagiaireScene tableStagiaireScene = new TableStagiaireScene(stageTableau, listeDeResultat, criteres, true);
         tableStagiaireScene.getStylesheets().add("style.css");

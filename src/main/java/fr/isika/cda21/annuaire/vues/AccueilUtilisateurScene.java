@@ -1,7 +1,6 @@
 package fr.isika.cda21.annuaire.vues;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +41,12 @@ public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
     private final ChoiceBox<String> txtDepartement;
     private final StyledTextField txtAnneeDeFormation;
     private final Label validationAjout;
+    private final ArbreBinaire arbre;
 
     // Constructeur de la scene
-    public AccueilUtilisateurScene(Stage stage, Boolean administrateur) {
+    public AccueilUtilisateurScene(Stage stage, Boolean administrateur) throws FileNotFoundException {
         super(new VBox(), 1000, 600);
+        arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
 
         // On récupère la racine de la scene et on la détermine comme VBox : On déclare un attribut
         VBox myRoot = (VBox) this.getRoot();
@@ -167,7 +169,12 @@ public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
         btnDeconnexion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                AccueilUtilisateurScene accueilRetour = new AccueilUtilisateurScene(stage, false);
+                AccueilUtilisateurScene accueilRetour = null;
+                try {
+                    accueilRetour = new AccueilUtilisateurScene(stage, false);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 accueilRetour.getStylesheets().add("style.css");
                 stage.setScene(accueilRetour);
             }
@@ -184,7 +191,7 @@ public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
 
                     Stagiaire criteres = new Stagiaire("", "", "", "", 0);
                     List<Stagiaire> listeDeStagiaires = new ArrayList<>();
-                    ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaires, GestionFichiers.getRaf());
+                    arbre.debutParcoursAlphabetique(listeDeStagiaires);
                     TableStagiaireScene tableStagiaireScene = new TableStagiaireScene(stage, listeDeStagiaires, criteres, administrateur);
                     tableStagiaireScene.getStylesheets().add("style.css");
                     stage.setScene(tableStagiaireScene);
@@ -210,7 +217,7 @@ public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
                 if(!nom.equals("") && !prenom.equals("") && !promotion.equals("") && !departementCourt.equals("Dé") && annee !=0 ){
                     try {
                         Stagiaire stagiaireAAjouter = new Stagiaire(nom, prenom, departementCourt, promotion, annee);
-                        ArbreBinaire.ajouterUnStagiaire(stagiaireAAjouter, GestionFichiers.getRaf());
+                        arbre.ajouterUnStagiaire(stagiaireAAjouter);
                         validationAjout.setText("Le stagiaire a bien été ajouté.");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -249,7 +256,7 @@ public class AccueilUtilisateurScene extends Scene implements StyleGeneral{
                 List<Stagiaire> listStagiairesRecherches = new ArrayList<>();
 
                 try {
-                    ArbreBinaire.dbtRechAv(listStagiairesRecherches, criteres, GestionFichiers.getRaf());
+                    arbre.dbtRechAv(listStagiairesRecherches, criteres);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

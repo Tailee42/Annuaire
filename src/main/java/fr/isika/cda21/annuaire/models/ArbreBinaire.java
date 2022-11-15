@@ -1,40 +1,46 @@
 package fr.isika.cda21.annuaire.models;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArbreBinaire {
 
+    private GestionFichiers rafFichierDom ;
+
+    public ArbreBinaire(String nomFichier) throws FileNotFoundException {
+        rafFichierDom = new GestionFichiers(nomFichier);
+    }
+
     //Méthodes spécifiques
-    public static void ajouterUnStagiaire(Stagiaire stagaireAAjouter, RandomAccessFile raf) throws IOException {
-        if (raf.length() != 0) {
-            raf.seek(0);
-            Noeud premierNoeud = GestionFichiers.lectureNoeud();
-            premierNoeud.ajouterNoeud(stagaireAAjouter, raf);
+    public void ajouterUnStagiaire(Stagiaire stagaireAAjouter) throws IOException {
+        if (rafFichierDom.getRaf().length() != 0) {
+            rafFichierDom.getRaf().seek(0);
+            Noeud premierNoeud = rafFichierDom.lectureNoeud();
+            premierNoeud.ajouterNoeud(stagaireAAjouter, rafFichierDom);
         } else {
-            raf.seek(0);
+            rafFichierDom.getRaf().seek(0);
             Noeud premierNoeud = new Noeud(stagaireAAjouter);
-            premierNoeud.ecrireNoeudBinaire(raf);
+            premierNoeud.ecrireNoeudBinaire(rafFichierDom.getRaf());
         }
     }
 
-    public static void debutParcoursAlphabetique(List<Stagiaire> listeDeStagiaire, RandomAccessFile raf ) throws IOException {
-        if (raf.length() != 0) {
-            raf.seek(0);
-            Noeud premierNoeud = GestionFichiers.lectureNoeud();
-            premierNoeud.ordreAlphabetique(listeDeStagiaire, raf);
+    public  void debutParcoursAlphabetique(List<Stagiaire> listeDeStagiaire) throws IOException {
+        if (rafFichierDom.getRaf().length() != 0) {
+            rafFichierDom.getRaf().seek(0);
+            Noeud premierNoeud = rafFichierDom.lectureNoeud();
+            premierNoeud.ordreAlphabetique(listeDeStagiaire, rafFichierDom);
         }
     }
 
     //Recherche lancée depuis la classe arbre. Args list qui contiendra les resultats
     // correspondant : stagiaire recherché, raf pour lire le fichier
-    public static void debutRechercheStagiaire(List<Stagiaire> listeResultats,Stagiaire stagiaireRecherche, RandomAccessFile raf ) throws IOException {
-        if (raf.length() != 0) {
-            raf.seek(0);
-            Noeud premierNoeud = GestionFichiers.lectureNoeud();
-            premierNoeud.rechercheStagiaire(listeResultats, stagiaireRecherche, raf);
+    public void debutRechercheStagiaire(List<Stagiaire> listeResultats,Stagiaire stagiaireRecherche) throws IOException {
+        if (rafFichierDom.getRaf().length() != 0) {
+            rafFichierDom.getRaf().seek(0);
+            Noeud premierNoeud = rafFichierDom.lectureNoeud();
+            premierNoeud.rechercheStagiaire(listeResultats, stagiaireRecherche, rafFichierDom);
         } else {
             // TODO retour visuel, fichier vide
             System.out.println("Ce fichier ne contient aucun stagiaire.");
@@ -42,13 +48,13 @@ public class ArbreBinaire {
     }
 
     //Recherche lancée depuis la classe arbre. Args list qui contiendra les resultats correspondant : stagiaire recherché, raf pour lire le fichier
-    public static void dbtRechAv(List<Stagiaire> rechercheAvancee ,Stagiaire stagiaireToFind, RandomAccessFile raf ) throws IOException {
+    public void dbtRechAv(List<Stagiaire> rechercheAvancee ,Stagiaire stagiaireToFind) throws IOException {
         List<Stagiaire> ordreAlpha = new ArrayList<>();
 
-        if (raf.length() != 0) {
-            raf.seek(0);
-            Noeud premierNoeud = GestionFichiers.lectureNoeud();
-            premierNoeud.ordreAlphabetique(ordreAlpha, raf);
+        if (rafFichierDom.getRaf().length() != 0) {
+            rafFichierDom.getRaf().seek(0);
+            Noeud premierNoeud = rafFichierDom.lectureNoeud();
+            premierNoeud.ordreAlphabetique(ordreAlpha, rafFichierDom);
             for(Stagiaire stagiaire : ordreAlpha) {
                 stagiaire.rechercheAvancee(rechercheAvancee, stagiaireToFind);
             }
@@ -58,24 +64,31 @@ public class ArbreBinaire {
         }
     }
 
-    public static void supprimerUnStagiaire(Stagiaire stagiaireASupprimer, RandomAccessFile raf) throws IOException {
-        if (raf.length() != 0) {
-            raf.seek(0);
-            Noeud premierNoeud = GestionFichiers.lectureNoeud();
-            premierNoeud.supprimerNoeud(stagiaireASupprimer, raf);
+    public void supprimerUnStagiaire(Stagiaire stagiaireASupprimer) throws IOException {
+        if (rafFichierDom.getRaf().length() != 0) {
+            rafFichierDom.getRaf().seek(0);
+            Noeud premierNoeud = rafFichierDom.lectureNoeud();
+            premierNoeud.supprimerNoeud(stagiaireASupprimer, rafFichierDom);
         }
     }
 
-    public static void modification(Stagiaire stagiaireAModifier, Stagiaire stagiaireAJour, RandomAccessFile raf)
+    public  void modification(Stagiaire stagiaireAModifier, Stagiaire stagiaireAJour)
             throws IOException {
 
         if (stagiaireAModifier.compareTo(stagiaireAJour) != 0) {
-            if (raf.length() != 0) {
-                ajouterUnStagiaire(stagiaireAJour, raf);
-                supprimerUnStagiaire(stagiaireAModifier, raf);
+            if (rafFichierDom.getRaf().length() != 0) {
+                ajouterUnStagiaire(stagiaireAJour);
+                supprimerUnStagiaire(stagiaireAModifier);
             }
         }
 
     }
 
+    public GestionFichiers getRafFichierDom() {
+        return rafFichierDom;
+    }
+
+    public void setRafFichierDom(GestionFichiers rafFichierDom) {
+        this.rafFichierDom = rafFichierDom;
+    }
 }

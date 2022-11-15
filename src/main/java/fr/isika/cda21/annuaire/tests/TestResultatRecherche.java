@@ -1,7 +1,6 @@
 package fr.isika.cda21.annuaire.tests;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 import fr.isika.cda21.annuaire.vues.TableStagiaireScene;
 import javafx.application.Application;
@@ -18,8 +17,10 @@ public class TestResultatRecherche extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        ArbreBinaire arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
+
         List<Stagiaire> listeDeStagiaires = new ArrayList<>();
-        ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaires, GestionFichiers.getRaf());
+        arbre.debutParcoursAlphabetique(listeDeStagiaires);
 
         Stagiaire criteres = new Stagiaire(null, null, null, null, 0);
 

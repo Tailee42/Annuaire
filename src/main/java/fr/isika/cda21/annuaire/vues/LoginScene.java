@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 public class LoginScene extends Scene implements StyleGeneral{
 
     private final TextField txtIdentifiant;
@@ -68,7 +70,12 @@ public class LoginScene extends Scene implements StyleGeneral{
         // -----Actions Boutons ------
         btnValider.setOnAction(eventAction -> {
             if (Administrateur.IDENTIFIANT.equals(txtIdentifiant.getText()) && Administrateur.MOTDEPASSE.equals(txtMotDePasse.getText())) {
-                AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,true);
+                AccueilUtilisateurScene accueilUtilisateurScene = null;
+                try {
+                    accueilUtilisateurScene = new AccueilUtilisateurScene(stage,true);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 accueilUtilisateurScene.getStylesheets().add("style.css");
                 stage.setScene(accueilUtilisateurScene);
 
@@ -78,7 +85,12 @@ public class LoginScene extends Scene implements StyleGeneral{
         });
 
         btnAnnuler.setOnAction(eventAction -> {
-            AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage,false);
+            AccueilUtilisateurScene accueilUtilisateurScene = null;
+            try {
+                accueilUtilisateurScene = new AccueilUtilisateurScene(stage,false);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             accueilUtilisateurScene.getStylesheets().add("style.css");
             stage.setScene(accueilUtilisateurScene);
         });

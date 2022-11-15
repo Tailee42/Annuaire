@@ -1,7 +1,6 @@
 package fr.isika.cda21.annuaire.tests;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Noeud;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 
@@ -21,9 +20,12 @@ Attention pour l'utiliser :
 public class TesteurSupprimer {
 
     public static void main(String[] args) {
+
         try {
+            ArbreBinaire arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
+
             List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire, GestionFichiers.getRaf());
+            arbre.debutParcoursAlphabetique(listeDeStagiaire);
 
             if (listeDeStagiaire.size() == 0 ) {
                 System.out.println("Cette liste est vide");
@@ -34,18 +36,18 @@ public class TesteurSupprimer {
                 System.out.println(stagiaire);
             }
 
-            ArbreBinaire.supprimerUnStagiaire(new Stagiaire("Lacroix", "Charles", "23", "AL10", 2018), GestionFichiers.getRaf());
+            arbre.supprimerUnStagiaire(new Stagiaire("Lacroix", "Charles", "23", "AL10", 2018));
 
             System.out.println();
-            GestionFichiers.getRaf().seek(0);
-            for (int i = 0; i < (GestionFichiers.getRaf().length() / Noeud.TAILLE_NOEUD_OCTETS); i++) {
-                System.out.println(GestionFichiers.lectureNoeud());
+            arbre.getRafFichierDom().getRaf().seek(0);
+            for (int i = 0; i < (arbre.getRafFichierDom().getRaf().length() / Noeud.TAILLE_NOEUD_OCTETS); i++) {
+                System.out.println(arbre.getRafFichierDom().lectureNoeud());
             }
 
             System.out.println("Liste avec la suppression");
 
             List<Stagiaire> listeDeStagiaireAvecSuppression = new ArrayList<>();
-            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaireAvecSuppression, GestionFichiers.getRaf());
+            arbre.debutParcoursAlphabetique(listeDeStagiaireAvecSuppression);
 
 
             for (Stagiaire stagiaire :

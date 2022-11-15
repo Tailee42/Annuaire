@@ -1,11 +1,11 @@
 package fr.isika.cda21.annuaire.vues;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 
 import javafx.event.ActionEvent;
@@ -30,10 +30,12 @@ public class ModificationScene extends Scene implements StyleGeneral {
     private final TextField txtPromo;
     private final TextField txtDepartement;
     private final TextField txtAnneeDeFormation;
+    private final ArbreBinaire arbre;
 
     // Constructeur de la scene
-    public ModificationScene(Stage stage, Stagiaire stagiaireAModifier, Stagiaire criteres) {
+    public ModificationScene(Stage stage, Stagiaire stagiaireAModifier, Stagiaire criteres) throws FileNotFoundException {
         super(new VBox(), 1000, 600);
+        arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
 
         // On récupère la racine de la scene et on la détermine comme BorderPane:
         // On déclare un attribut
@@ -133,10 +135,10 @@ public class ModificationScene extends Scene implements StyleGeneral {
                     Stagiaire stagiaireAJour = new Stagiaire(txtNom.getText(), txtPrenom.getText(),
                             txtDepartement.getText(), txtPromo.getText(), anneeInt);
 
-                    ArbreBinaire.modification(stagiaireAModifier, stagiaireAJour, GestionFichiers.getRaf());
+                    arbre.modification(stagiaireAModifier, stagiaireAJour);
 
                     List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-                    ArbreBinaire.dbtRechAv(listeDeStagiaire, criteres, GestionFichiers.getRaf());
+                    arbre.dbtRechAv(listeDeStagiaire, criteres);
 
                     TableStagiaireScene tableStagiaireScene = new TableStagiaireScene(stage, listeDeStagiaire, criteres, true);
                     tableStagiaireScene.getStylesheets().add("style.css");
@@ -157,7 +159,7 @@ public class ModificationScene extends Scene implements StyleGeneral {
 
                 try {
                     List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-                    ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire, GestionFichiers.getRaf());
+                    arbre.debutParcoursAlphabetique(listeDeStagiaire);
 
                     TableStagiaireScene tableStagiaireScene = new TableStagiaireScene(stage, listeDeStagiaire, criteres, true);
                     tableStagiaireScene.getStylesheets().add("style.css");

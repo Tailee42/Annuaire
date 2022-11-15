@@ -1,7 +1,6 @@
 package fr.isika.cda21.annuaire.tests;
 
 import fr.isika.cda21.annuaire.models.ArbreBinaire;
-import fr.isika.cda21.annuaire.models.GestionFichiers;
 import fr.isika.cda21.annuaire.models.Stagiaire;
 
 import java.io.IOException;
@@ -12,12 +11,11 @@ public class TesteurParcoursRechercheNom {
     public static void main(String[] args) {
         try {
 
-            GestionFichiers.getRaf().seek(0);
+            ArbreBinaire arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
 
             //************************ Test Affichage ordre alphabetique
             List<Stagiaire> listeDeStagiaire = new ArrayList<>();
-            ArbreBinaire.debutParcoursAlphabetique(listeDeStagiaire,
-                    GestionFichiers.getRaf());
+            arbre.debutParcoursAlphabetique(listeDeStagiaire);
 
             for (Stagiaire stagiaire : listeDeStagiaire) {
                 System.out.println(stagiaire);
@@ -26,7 +24,7 @@ public class TesteurParcoursRechercheNom {
             // ********************** Test Recherche classique nom *******************************
             List<Stagiaire> listeResultats = new ArrayList<>();
 
-            ArbreBinaire.debutRechercheStagiaire(listeResultats, new Stagiaire("TRAN", "", "", "", 0),GestionFichiers.getRaf());
+            arbre.debutRechercheStagiaire(listeResultats, new Stagiaire("TRAN", "", "", "", 0));
 
             for (Stagiaire stagiaire : listeResultats) {
                 System.out.println("Trouvé : " + stagiaire);
@@ -35,7 +33,7 @@ public class TesteurParcoursRechercheNom {
             //	**************************** Test Recherche Avancée *******************************************
             List<Stagiaire> rechercheAvancee = new ArrayList<>();
 
-            ArbreBinaire.dbtRechAv(rechercheAvancee, new Stagiaire(null, null,null,"ATOD 17",0 ), GestionFichiers.getRaf());
+            arbre.dbtRechAv(rechercheAvancee, new Stagiaire(null, null,null,"ATOD 17",0 ));
 
             if(rechercheAvancee.size()== 0) {
                 System.out.println("La liste est vide.");
@@ -46,7 +44,7 @@ public class TesteurParcoursRechercheNom {
                 System.out.println("Trouvé : "+stagiaire);
             }
 
-            GestionFichiers.fermetureAccessFile();
+            arbre.getRafFichierDom().fermetureAccessFile();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

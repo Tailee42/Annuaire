@@ -1,6 +1,6 @@
 package fr.isika.cda21.annuaire.application;
 
-import fr.isika.cda21.annuaire.models.GestionFichiers;
+import fr.isika.cda21.annuaire.models.ArbreBinaire;
 import fr.isika.cda21.annuaire.vues.AccueilUtilisateurScene;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -10,9 +10,12 @@ import java.io.IOException;
 
 public class Annuaire extends Application {
     public static void main(String[] args) throws IOException {
-        GestionFichiers.verificationImportFichierDon();
+
+        ArbreBinaire arbre = new ArbreBinaire("src/main/resources/ecriturearbrebinaire.bin");
+
+        arbre.getRafFichierDom().verificationImportFichierDon(arbre);
         launch(args);
-        GestionFichiers.fermetureAccessFile();
+        arbre.getRafFichierDom().fermetureAccessFile();
     }
 
 

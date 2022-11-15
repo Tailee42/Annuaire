@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class TableStagiaireScene extends Scene implements StyleGeneral{
@@ -142,7 +143,11 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
                     stagePopup.setResizable(false);
                     stagePopup.setTitle("ANNUAIRE");
-                    stagePopup.setScene(new PopUpScene(stagePopup, stage, stagiaireASupprimer, criteres));
+                    try {
+                        stagePopup.setScene(new PopUpScene(stagePopup, stage, stagiaireASupprimer, criteres));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     stagePopup.getIcons().add(new Image("LogoIsika.jpg"));
                     stagePopup.show();
                 } else {
@@ -180,7 +185,12 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
                 Stagiaire stagiaireAModifier = tableView.getSelectionModel().getSelectedItem();
                 if (stagiaireAModifier != null) {
-                    ModificationScene modificationScene = new ModificationScene(stage, stagiaireAModifier, criteres);
+                    ModificationScene modificationScene = null;
+                    try {
+                        modificationScene = new ModificationScene(stage, stagiaireAModifier, criteres);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     modificationScene.getStylesheets().add("style.css");
                     stage.setScene(modificationScene);
                 } else {
@@ -199,7 +209,12 @@ public class TableStagiaireScene extends Scene implements StyleGeneral{
 
             @Override
             public void handle(ActionEvent event) {
-                AccueilUtilisateurScene accueilUtilisateurScene = new AccueilUtilisateurScene(stage, administrateur);
+                AccueilUtilisateurScene accueilUtilisateurScene = null;
+                try {
+                    accueilUtilisateurScene = new AccueilUtilisateurScene(stage, administrateur);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 accueilUtilisateurScene.getStylesheets().add("style.css");
                 stage.setScene(accueilUtilisateurScene);
             }
