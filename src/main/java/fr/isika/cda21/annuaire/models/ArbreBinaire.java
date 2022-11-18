@@ -21,7 +21,7 @@ public class ArbreBinaire {
             premierNoeud.ajouterNoeud(stagaireAAjouter, rafFichierDom);
         } else {
             rafFichierDom.getRaf().seek(0);
-            Noeud premierNoeud = new Noeud(stagaireAAjouter);
+            Noeud premierNoeud = new Noeud(stagaireAAjouter, -1, 0);
             premierNoeud.ecrireNoeudBinaire(rafFichierDom.getRaf());
         }
     }

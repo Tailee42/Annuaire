@@ -6,14 +6,6 @@ public class GestionFichiers {
 
     private  RandomAccessFile raf;
 
-//    static {
-//        try {
-//            raf = new RandomAccessFile("src/main/resources/ecriturearbrebinaire.bin", "rw");
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     public GestionFichiers(String cheminFichier) throws FileNotFoundException {
         raf = new RandomAccessFile(cheminFichier, "rw");
     }
@@ -41,7 +33,7 @@ public class GestionFichiers {
         int anneeDeFormation = Integer.parseInt(br.readLine().trim());
         br.readLine();
 
-        new Noeud(new Stagiaire(nom, prenom, departement, promo, anneeDeFormation)).ecrireNoeudBinaire(raf);
+        new Noeud(new Stagiaire(nom, prenom, departement, promo, anneeDeFormation), -1, 0).ecrireNoeudBinaire(raf);
 
         while (reader.ready()) {
             nom = br.readLine().trim();
@@ -69,11 +61,13 @@ public class GestionFichiers {
         int anneeDeFormation = raf.readInt();
 
         int listeChainee = raf.readInt();
+        int parent = raf.readInt();
         int filsGauche = raf.readInt();
         int filsDroit = raf.readInt();
+        int hauteur = raf.readInt();
 
         Stagiaire stagiaireLu = new Stagiaire(nom, prenom, departement, promo, anneeDeFormation);
-        return new Noeud(stagiaireLu, listeChainee, filsGauche, filsDroit);
+        return new Noeud(stagiaireLu, listeChainee, parent, filsGauche, filsDroit, hauteur);
     }
 
     private String lectureAttributStringStagiaire() throws IOException {

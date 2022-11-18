@@ -15,7 +15,7 @@ public interface StyleGeneral {
     int TAILLE_CHAMP_TEXTE = 200;
 
     //choix du style et de la couleur de la police:
-    String POLICE_COULEUR = ("-fx-text-fill: rgb(247, 157, 79)");
+    String POLICE_COULEUR = "-fx-text-fill: rgb(247, 157, 79)";
     String CONTOUR_BOUTON = "-fx-border-color: rgb(247, 157, 79)";
     String FOND_BOUTON = "-fx-background-color: rgb(247, 157, 79)";
     String CONTOUR_TABLEAU = "-fx-border-color: rgb(0, 0, 0)";

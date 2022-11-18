@@ -9,50 +9,58 @@ public class Noeud {
     //attributs
     private Stagiaire stagiaire;
     private int listeChainee;
+    private int parent;
     private int filsGauche;
     private int filsDroit;
+    private int hauteur;
     private static final int FILS_NUL = -1; //car 0 est pour la racine
     private static final int LISTE_VIDE = -1;
-    public static final int TAILLE_LISTECHAINEE_OCTETS = 4;
-    public static final int TAILLE_FILS_GAUCHE_OCTETS = 4;
-    public static final int TAILLE_FILS_DROIT_OCTETS = 4;
+    public static final int TAILLE_INT_OCTETS = 4;
 
-    public static final int TAILLE_NOEUD_OCTETS = Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS +
-            TAILLE_FILS_GAUCHE_OCTETS + TAILLE_FILS_DROIT_OCTETS ;
+
+    public static final int TAILLE_NOEUD_OCTETS = Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_INT_OCTETS*5;
 
     //Constructeur
-    public Noeud(Stagiaire stagiaire,int listeChainee, int filsGauche, int filsDroit) {
+    public Noeud(Stagiaire stagiaire,int listeChainee, int parent, int filsGauche, int filsDroit, int hauteur) {
         super();
         this.stagiaire = stagiaire;
         this.listeChainee = listeChainee;
+        this.parent = parent;
         this.filsGauche = filsGauche;
         this.filsDroit = filsDroit;
+        this.hauteur = hauteur;
     }
 
-    public Noeud(Stagiaire stagiaire) {
+    public Noeud(Stagiaire stagiaire, int parent, int hauteur) {
         super();
         this.stagiaire = stagiaire;
         this.listeChainee = LISTE_VIDE;
+        this.parent = parent;
         this.filsGauche = FILS_NUL;
         this.filsDroit = FILS_NUL;
+        this.hauteur = hauteur;
     }
 
     //méthodes spécifiques
     @Override
     public String toString() {
-        return "{" +
+        return "Noeud{" +
                 "stagiaire=" + stagiaire +
-                ", listeChainée=" + listeChainee +
+                ", listeChainee=" + listeChainee +
+                ", parent=" + parent +
                 ", filsGauche=" + filsGauche +
                 ", filsDroit=" + filsDroit +
+                ", hauteur=" + hauteur +
                 '}';
     }
 
     public void ecrireNoeudBinaire(RandomAccessFile raf) throws IOException {
         this.stagiaire.ecritureStagiaireBinaire(raf);
         raf.writeInt(listeChainee);
+        raf.writeInt(parent);
         raf.writeInt(filsGauche);
         raf.writeInt(filsDroit);
+        raf.writeInt(hauteur);
     }
 
     public void ajouterNoeud(Stagiaire stagiaireAAjouter, GestionFichiers rafFichierDom) throws IOException {
@@ -70,28 +78,19 @@ public class Noeud {
                 // Ajout du stagaire dans la liste chainée
                 Noeud noeudDeLaListeChainee = this;
 
-                while (noeudDeLaListeChainee.listeChainee != LISTE_VIDE) { //Déplacement dans la liste chainée poour arriver à la fin
+                while (noeudDeLaListeChainee.listeChainee != LISTE_VIDE) { //Déplacement dans la liste chainée pour arriver à la fin
                     raf.seek((long) noeudDeLaListeChainee.listeChainee * TAILLE_NOEUD_OCTETS); //positionne le curseur sur le prochain stagiaire de la liste chaine.
                     noeudDeLaListeChainee = rafFichierDom.lectureNoeud();
                 }
 
                 //Ajout du stagiaire
-                int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
-                raf.seek(raf.getFilePointer() - (TAILLE_LISTECHAINEE_OCTETS
-                        + TAILLE_FILS_GAUCHE_OCTETS + TAILLE_FILS_DROIT_OCTETS));
-                raf.writeInt(indexStagiaireAAjouter);
-                raf.seek(raf.length());
-                new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
+                ajoutDansFichierBinaire(raf, 5, stagiaireAAjouter); //recule de hauteur, fils droit, fils gauche, parent, liste Chainée
 
             }
             //Recherche de l'emplacement pour l'ajout
         } else if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireAAjouter.getNom()) > 0) {
             if (this.filsGauche == FILS_NUL) {
-                int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
-                raf.seek(raf.getFilePointer() - (TAILLE_FILS_GAUCHE_OCTETS + TAILLE_FILS_DROIT_OCTETS));
-                raf.writeInt(indexStagiaireAAjouter);
-                raf.seek(raf.length());
-                new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
+                ajoutDansFichierBinaire(raf, 3, stagiaireAAjouter); //recule de hauteur, fils droit, fils gauche
             } else {
                 raf.seek((long) this.filsGauche * TAILLE_NOEUD_OCTETS);
                 Noeud noeudFilsGauche = rafFichierDom.lectureNoeud();
@@ -99,11 +98,7 @@ public class Noeud {
             }
         } else {
             if (this.filsDroit == FILS_NUL) {
-                int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
-                raf.seek(raf.getFilePointer() - (TAILLE_FILS_DROIT_OCTETS));
-                raf.writeInt(indexStagiaireAAjouter);
-                raf.seek(raf.length());
-                new Noeud(stagiaireAAjouter).ecrireNoeudBinaire(raf);
+                ajoutDansFichierBinaire(raf, 2, stagiaireAAjouter); //recule de hauteur, fils droit, fils gauche, parent, liste Chainée
             } else {
                 raf.seek((long) this.filsDroit * TAILLE_NOEUD_OCTETS);
                 Noeud noeudFilsDroit = rafFichierDom.lectureNoeud();
@@ -111,6 +106,16 @@ public class Noeud {
             }
         }
     }
+
+    private void ajoutDansFichierBinaire(RandomAccessFile raf, int nombreDeParametresAReculer, Stagiaire stagiaireAAjouter) throws IOException {
+        int indexNoeudParent = (int) (raf.getFilePointer() / TAILLE_NOEUD_OCTETS) - 1;
+        int indexStagiaireAAjouter = (int) (raf.length() / TAILLE_NOEUD_OCTETS);
+        raf.seek(raf.getFilePointer() - ((long) TAILLE_INT_OCTETS * nombreDeParametresAReculer));
+        raf.writeInt(indexStagiaireAAjouter);
+        raf.seek(raf.length());
+        new Noeud(stagiaireAAjouter, indexNoeudParent, hauteur + 1).ecrireNoeudBinaire(raf);
+    }
+
 
     public void ordreAlphabetique(List<Stagiaire> listeDeStagiaire, GestionFichiers rafFichierDom) throws IOException {
 
@@ -202,7 +207,7 @@ public class Noeud {
             // s'est arrêté pour stocker les informations
 
             this.filsGauche = noeudFilsGauche.supprimerNoeud(stagiaireASupprimer, rafFichierDom);
-            raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS); //car on est au début de notre Noeud
+            raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_INT_OCTETS * 2); //car on est au début de notre Noeud. 2 pour arriver au début du fils gauche
             raf.writeInt(this.filsGauche);
 
         } else if (this.stagiaire.getNom().compareToIgnoreCase(stagiaireASupprimer.getNom()) < 0) { // on ne veut pas le contraire de
@@ -212,7 +217,7 @@ public class Noeud {
             Noeud noeudFilsDroit = rafFichierDom.lectureNoeud();
 
             this.filsDroit = noeudFilsDroit.supprimerNoeud(stagiaireASupprimer, rafFichierDom);
-            raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS); //car on est au début de notre Noeud
+            raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_INT_OCTETS * 3); //car on est au début de notre Noeud. 3 pour arriver au début du fils droit
             raf.writeInt(this.filsDroit);
 
         } else { // cas où on a trouvé le nom du stagiaire à supprimer
@@ -241,7 +246,7 @@ public class Noeud {
                     raf.seek((long) this.filsDroit * TAILLE_NOEUD_OCTETS);
                     Noeud noeudFilsDroit = rafFichierDom.lectureNoeud();
                     this.filsDroit = noeudFilsDroit.supprimerNoeud(noeudDeRemplacement.stagiaire, rafFichierDom);
-                    raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_LISTECHAINEE_OCTETS + TAILLE_FILS_GAUCHE_OCTETS); //car on est au début de notre Noeud
+                    raf.seek((long) indexDuStagiaire * TAILLE_NOEUD_OCTETS + Stagiaire.TAILLE_STAGIAIRE_OCTETS + TAILLE_INT_OCTETS * 3); //car on est au début de notre Noeud. 3 pour arriver au début du fils droit
                     raf.writeInt(this.filsDroit);
 
                     return indexDuStagiaire;
